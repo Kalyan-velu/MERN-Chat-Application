@@ -1,6 +1,9 @@
 .body-l {
-    margin: 1%;
-    display: flex;
-    -webkit-justify-content: space-around;
-    border-radius: 5px;
+    justify-content: center;
+}
+
+.auth, p {
+    font-size: 50px;
+    font-style: oblique;
+
 }

@@ -1,14 +1,18 @@
-import './App.css';
+import * as React from "react";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import "./App.css";
 import NavigationBar from "./components/navigation/NavigationBar";
-import Authentication from "./components/registration/Authentication";
-
 
 function App() {
     return (
-        <div className="App">
-            <NavigationBar/>
-            <Authentication/>
-        </div>
+        <Router>
+            <div className="App">
+                <Routes>
+                    <Route path="/" element={<NavigationBar/>}/>
+                </Routes>
+            </div>
+        </Router>
     );
 }
-export default App;
+
+export default App
