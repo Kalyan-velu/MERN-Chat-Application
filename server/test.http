@@ -1,0 +1,13 @@
+POST http://localhost:8080/app/register
+Content-Type: application/json
+
+{
+  "userName": "Kalyan Jyoti Bora",
+  "phoneNumber": "9101725445",
+  "passWord": "yus68"
+}
+
+###
+
+
+
