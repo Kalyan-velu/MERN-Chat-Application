@@ -1,5 +1,5 @@
 .navBar-L {
-    background: rgb(241, 236, 236);
+    background: rgb(96, 79, 156);
     display: flex;
     justify-content: space-around;
     border-radius: 5px;
@@ -29,11 +29,20 @@
 }
 
 .btn {
-    color: aliceblue;
-    margin: 90%;
-    top: 25%;
-    height: 30px;
+    color: #ffffff;
     font-family: Roboto, ui-rounded;
     font-size: 12px;
     font-kerning: initial;
+    background: #591980;
+    border-radius: 400px;
+}
+
+.img {
+    display: flex;
+    justify-content: center;
+}
+
+.about {
+    width: 80%;
+    height: 10%;
 }
