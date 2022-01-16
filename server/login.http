@@ -1,0 +1,12 @@
+POST http://localhost:8000/app/auth/register
+Accept: application/json
+
+{
+ "userName":"Velu",
+ "phoneNumber":"9101725446",
+ "passWord":"delink"
+}
+
+###
+
+
