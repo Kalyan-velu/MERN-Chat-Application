@@ -1,22 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap');
+
 .App {
-    background: fixed;
-}
-
-.left {
-    background-color: #4fa0cb;
-    width: 20%;
-    height: inherit;
-    border-radius: 10px;
-}
-
-.right {
-    background-color: #f1ecec;
-    width: 75%;
-    height: 75%;
-    border-radius: 10px;
-}
-
-section {
+    min-height: 100vh;
     display: flex;
-    -webkit-justify-content: space-around;
+    background-color: #eee2e2;
 }

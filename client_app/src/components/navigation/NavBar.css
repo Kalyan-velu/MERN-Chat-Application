@@ -46,3 +46,10 @@
     width: 80%;
     height: 10%;
 }
+
+.card {
+    display: grid;
+    justify-content: center;
+
+
+}
