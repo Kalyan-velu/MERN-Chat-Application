@@ -13,8 +13,7 @@ const ChatPage = () => {
 				display: "flex",
 				justifyContent: "space-between",
 				width: "100%",
-				height: "100%",
-				padding: "10px"
+				height: "100%"
 			}}>
 				<MyChats/>
 				<ChatBox/>

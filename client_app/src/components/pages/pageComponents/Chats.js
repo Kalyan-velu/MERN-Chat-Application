@@ -9,14 +9,13 @@ import {Delete} from "@mui/icons-material";
 export default function MyChats() {
 	return (
 
-		<Box sx={{
+		<Box p={3} sx={{
 			display: "flex",
 			flexDirection: "column",
-			backgroundColor: "#b89de2",
-			padding: 3,
+			backgroundColor: "#d97dff",
 			width: "20%",
 			height: "85%",
-			borderRadius: "10px",
+
 			borderWidth: "1px"
 		}}>
 			<Box sx={

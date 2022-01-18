@@ -1,111 +1,135 @@
-import React, {useState} from 'react';
-import {Card, CardActions, CardContent, TextField} from "@mui/material";
-import Button from "@mui/material/Button";
-import axios from "axios";
+import React from 'react'
+import {Button, Grid, Paper, TextField, Typography} from '@mui/material'
+import {ErrorMessage, Field, Form, Formik} from 'formik'
+import * as Yup from 'yup'
 
-function Register(props) {
-	const [ userName, setUserName ] = useState( " " );
-	const [ phoneNumber, setPhoneNumber ] = useState( " " );
-	const [ password, setPassword ] = useState( " " );
-	const [ passWordRe, setPasswordRe ] = useState( " " );
-
-
-	function handleUserNameChange(e) {
-		setUserName( e.target.value )
+const Register = () => {
+	const gridStyle = {
+		display: "grid",
+		justifyContent: "center",
+	}
+	const paperStyle = {
+		backgroundColor: "#d6dbee",
+		padding: '0 15px 40px 15px',
+		borderRadius: "10px",
+		width: "inherit"
+	}
+	const styleField = {
+		padding: '5px 5px 5px 5px',
+	}
+	const btnStyle = {
+		color: "#0072E5",
+		display: "center",
+		marginTop: 10,
+		width: "50%"
 	}
 
-	function handlePhoneNoChange(e) {
-		setPhoneNumber( e.target.value )
+	const phoneRegExp = /^[1-9]{2}[0-9]{8}/
+	const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+
+	const initialValues = {
+		username: '',
+		phoneNumber: '',
+		password: '',
+		confirmPassword: ''
 	}
 
-	function handlePasswordChange(e) {
-		setPassword( e.target.value )
+	const validationSchema = Yup.object().shape( {
+		username: Yup.string()
+			.required( "Required" ),
+		phoneNumber: Yup.string()
+			.matches( phoneRegExp, "Enter valid Phone number" )
+			.required( "Required" ),
+		password: Yup.string().min( 6, "Minimum characters should be 6" )
+			.matches( passwordRegExp, "Password must have one upper, lower case, number, special symbol" )
+			.required( 'Required' ),
+		confirmPassword: Yup.string().oneOf( [ Yup.ref( 'password' ) ], "Password not matches" ).required( 'Required' )
+	} )
+	const onSubmit = (values, props) => {
+		console.log( alert( JSON.stringify( values ), null, 2 ) )
+		props.resetForm()
 	}
-
-	function handlePasswordReChange(e) {
-		setPasswordRe( e.target.value )
-	}
-
-	function onSubmit(e) {
-		e.preventDefault();
-	}
-
-	const handleSubmit = () => {
-		axios.post( `http://localhost:8000/app/auth/register`, {
-			'userName': userName,
-			'phoneNumber': phoneNumber,
-			'password': password
-		} ).then( r => {
-				console.log( r )
-			} )
-			.catch( err => {
-				console.log( err )
-			} )
-	}
-
 	return (
-		<div>
-			<Card className={"dialog"} open={props.open} sx={{backdropFilter: "10px blur"}}>
-				<CardContent>
-					<form method={"POST"} autoComplete={"off"} onSubmit={onSubmit}>
-						<TextField
-							autoFocus
-							margin="dense"
-							id="name"
-							label="UserName"
-							type="text"
-							fullWidth
-							variant="outlined"
-							onChange={handleUserNameChange}
-							required={true}
-						/>
+		<Grid style={gridStyle}>
+			<Formik
+				initialValues={initialValues}
+				validationSchema={validationSchema}
+				onSubmit={onSubmit}>
+				{(props) => (
+					<Form noValidate>
+						<Paper
+							elevation={0}
+							style={paperStyle}>
+							<div style={styleField}>
+								<Field as={TextField}
+								       margin={"dense"}
+								       padding={"dense"}
+								       name='username'
+								       label='Username'
+								       fullWidth
+								       error={props.errors.username && props.touched.username}
+								       helperText={<ErrorMessage name='name'/>} required/>
 
-						<TextField
-							autoFocus
-							margin="dense"
-							id="name"
-							label="Phone Number"
-							type="tel"
-							fullWidth
-							variant="outlined"
-							onChange={handlePhoneNoChange}
-							required={true}
-						/>
+								<Field as={TextField}
+								       margin={"dense"}
+								       padding={"dense"}
+								       name="phoneNumber"
+								       label='Phone Number'
+								       fullWidth
+								       error={props.errors.phoneNumber && props.touched.phoneNumber}
+								       helperText={<ErrorMessage name='phoneNumber'/>}
+								       required/>
 
-						<TextField
-							autoComplete="off"
-							autoFocus
-							margin="dense"
-							id="name"
-							label="Password"
-							type="password"
-							fullWidth
-							variant="outlined"
-							onChange={handlePasswordChange}
-							required={true}
-						/>
+								<Field as={TextField}
+								       margin={"dense"}
+								       padding={"dense"}
+								       name='password'
+								       label='Password'
+								       type='password'
+								       fullWidth
+								       error={props.errors.password && props.touched.password}
+								       helperText={
+									       <ErrorMessage name='password'/>}
+								       required/>
 
-						<TextField
-							autoFocus
-							margin="dense"
-							id="name"
-							label="Re-enter Password"
-							type="password"
-							fullWidth
-							variant="outlined"
-							onChange={handlePasswordReChange}
-							required={true}
-						/>
-					</form>
-				</CardContent>
-				<CardActions sx={{display: "flex", justifyContent: "center"}}>
-					<Button type="submit" onClick={handleSubmit}
-					        sx={{height: "30px", borderRadius: "10px"}}>Sign Up</Button>
-				</CardActions>
-			</Card>
+								<Field as={TextField}
+								       margin={"dense"}
+								       padding={"dense"}
+								       name='confirmPassword'
+								       label='Confirm Password'
+								       type='password'
+								       fullWidth
+								       error={props.errors.confirmPassword && props.touched.confirmPassword}
+								       helperText={<ErrorMessage name='confirmPassword'/>}
+								       required/>
+							</div>
+							<Grid align='center'>
+								<Typography
+									variant='caption'
+									color="secondary"
+								>Fill the form to create an account
+								</Typography>
+							</Grid>
+						</Paper>
+						<div style={{
+							display: "flex",
+							justifyContent: "center",
+							padding: "10px"
+						}}>
+							<Button
+								type='submit'
+								style={btnStyle}
+								variant='outlined'
+							>
+								Register
+							</Button>
+						</div>
+					</Form>
+				)}
+			</Formik>
 
-		</div>
-	);
+		</Grid>
+	)
 }
 
 export default Register;

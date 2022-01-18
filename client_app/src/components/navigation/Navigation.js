@@ -74,17 +74,15 @@ export default function Navigation() {
 		setAnchorEl( null );
 	};
 	const logOutHandler = () => {
-		navigate( '/auth' )
+		navigate( '/app' )
 	}
 	return (
 		<div style={{
-			padding: "9px 5px 9px 5px",
-			marginTop: "2px",
-			marginBottom: "2px",
+			marginTop: "2px"
 		}}>
 			<Box sx={{
 				flexGrow: 1,
-				backgroundColor: "#0f0332",
+				backgroundColor: "#16034b",
 				borderRadius: "2px"
 			}}>
 				<Toolbar>

@@ -1,0 +1,68 @@
+const expressAsyncHandler = require( "express-async-handler" );
+const User = require( "../models/userModel" );
+const generateToken = require( "../config/generateToken" );
+
+const registerUser = async (require, response) => {
+	const {username, phoneNumber, password, pic} = require.body;
+
+	if (!username || !phoneNumber || !password) {
+		return response.status( 400 ).json( {
+			message: 'Please fill all the fields'
+		} );
+	}
+
+	const userExists = await User.findOne( {phoneNumber} );
+
+	if (userExists) {
+		response.status( 400 ).json( {
+			message: 'User already exists'
+		} );
+	}
+
+	const user = await User.create( {
+		username,
+		phoneNumber,
+		password,
+		pic
+	} );
+
+	if (user) {
+		response.status( 200 ).json( {
+			_id: user._id,
+			username: user.username,
+			phoneNumber: user.phoneNumber,
+			pic: user.pic,
+			token: generateToken( user._id ),
+			message: 'User created successfully'
+		} );
+	} else {
+		response.status( 400 ).json( {
+			message: 'User not created'
+		} );
+	}
+}
+
+const authUser = async (require, response) => {
+	const {phoneNumber, password} = require.body;
+
+	const user = await User.findOne( {phoneNumber} );
+	if (user && (await user.matchPassword( password ))) {
+		response.status( 200 ).json( {
+			_id: user._id,
+			username: user.username,
+			phoneNumber: user.phoneNumber,
+			pic: user.pic,
+			token: generateToken( user._id ),
+			message: 'User authenticated successfully'
+		} );
+	} else {
+		response.status( 400 ).json( {
+			message: 'User not authenticated'
+		} );
+	}
+
+}
+module.exports = {
+	registerUser: expressAsyncHandler( registerUser ),
+	authUser: expressAsyncHandler( authUser )
+}

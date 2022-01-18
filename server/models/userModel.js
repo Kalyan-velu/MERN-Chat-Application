@@ -1,8 +1,9 @@
 const mongoose = require( 'mongoose' )
+const bcrypt = require( 'bcrypt' )
 
 
 const userSchema = new mongoose.Schema( {
-		userName: {
+		username: {
 			type: String,
 			require: true,
 			min: 3,
@@ -28,7 +29,26 @@ const userSchema = new mongoose.Schema( {
 		isAdmin: {
 			type: Boolean,
 		},
+		roles: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Role"
+			}
+		]
 	},
 	{timestamps: true} )
+
+userSchema.methods.matchPassword = async function (enteredPassword) {
+	return await bcrypt.compare( enteredPassword, this.password )
+}
+
+userSchema.pre( 'save', async function (next) {
+	if (!this.isModified( 'password' )) {
+		next();
+	}
+	const salt = await bcrypt.genSalt( 10 );
+	this.password = await bcrypt.hash( this.password, salt );
+} )
+
 
 module.exports = mongoose.model( "User", userSchema )

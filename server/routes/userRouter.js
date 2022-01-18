@@ -1,5 +1,9 @@
-const User = require( "../models/User.model" )
+const User = require( "../models/userModel" )
+const {registerUser, authUser} = require( "../controllers/userController" );
 const router = require( 'express' ).Router()
+
+router.route( '/register' ).post( registerUser )
+router.post( '/login', authUser )
 //update user
 router.put( "/:id", async (req, res) => {
 	if (req.body.userId === req.params.id || req.user.isAdmin) {

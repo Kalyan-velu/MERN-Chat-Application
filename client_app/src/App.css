@@ -1,2 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap');
 
+.suspence {
+    font-family: 'Dongle', cursive;
+    font-size: 2.5rem;
+    color: red;
+    text-align: center;
+    margin-top: 10rem;
+}
