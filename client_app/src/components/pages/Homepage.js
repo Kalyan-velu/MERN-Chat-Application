@@ -5,8 +5,11 @@ import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 import {buttonUnstyledClasses} from '@mui/base/ButtonUnstyled';
 import TabUnstyled, {tabUnstyledClasses} from '@mui/base/TabUnstyled';
-import Authentication from "./authentication/login";
+import Login from "./authentication/login";
 import {Container, Typography} from "@mui/material";
+import Register from "./authentication/register";
+import {FavoriteBorderOutlined} from "@mui/icons-material";
+
 
 const blue = {
 	50: '#F0F7FF',
@@ -76,38 +79,47 @@ const TabsList = styled( TabsListUnstyled )`
 `;
 
 export default function Homepage() {
-	return (
-		<Container maxWidth="sm" sx={{}}>
-			<Box
-				sx={{
-					display: 'flex',
-					justifyContent: 'center',
-					p: 3,
-					backgroundColor: "#fff",
-					width: '100%',
-					m: '40px 0 15px 0',
-					borderRadius: '10px',
-					borderWidth: '1px'
-				}}>
-				<Typography variant={'h3'}>Chat Site</Typography>
-			</Box>
-			<Box sx={{
-				backgroundColor: "white",
-				width: "100%",
-				p: 3,
-				borderRadius: "10px",
-				borderWidth: "1px"
-			}}>
-				<TabsUnstyled defaultValue={0}>
-					<TabsList>
-						<Tab>Log In</Tab>
-						<Tab>Register</Tab>
-					</TabsList>
-					<TabPanel value={0}>{<Authentication/>}</TabPanel>
-					<TabPanel value={1}>{<Authentication/>}</TabPanel>
 
-				</TabsUnstyled>
-			</Box>
-		</Container>
+
+	return (
+		<>
+			<Container maxWidth="sm">
+				<Box
+					sx={{
+						display: 'flex',
+						justifyContent: 'center',
+						p: 3,
+						backgroundColor: "#0f112d",
+						width: '100%',
+						m: '40px 0 15px 0',
+						borderRadius: '10px',
+						borderWidth: '1px'
+					}}>
+					<Typography variant={'h3'} sx={{color: "#fff"}}>Chat Site</Typography>
+				</Box>
+				<Box sx={{
+					backgroundColor: "#0f112d",
+					width: "100%",
+					p: 3,
+					borderRadius: "10px",
+					borderWidth: "1px"
+				}}>
+					<TabsUnstyled defaultValue={0}>
+						<TabsList>
+							<Tab>Sign Up</Tab>
+							<Tab>Log In</Tab>
+						</TabsList>
+						<TabPanel value={0}>{<Register/>}</TabPanel>
+						<TabPanel value={1}>{<Login/>}</TabPanel>
+
+					</TabsUnstyled>
+				</Box>
+			</Container>
+			<>
+				<div style={{display: "flex", justifyContent: "center",}}>
+					Created By Kalyan With <FavoriteBorderOutlined/>
+				</div>
+			</>
+		</>
 	);
 }
