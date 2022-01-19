@@ -9,6 +9,7 @@ const userRoutes = require( './routes/userRouter' )
 const authRoutes = require( './routes/auth.route' )
 const adminRoutes = require( './routes/admin.route' )
 const bodyParser = require( "body-parser" );
+const {notFound, errorHandler} = require( "./middleware/errorMiddleware" );
 
 dotenv.config()
 //connecting MongoDb
@@ -30,5 +31,8 @@ app.get( "/", (req, res) => {
 app.use( `/admin`, adminRoutes )
 app.use( `/api/user`, userRoutes )
 app.use( `/api/auth`, authRoutes )
+app.use( notFound )
+app.use( errorHandler )
 
-app.listen( 8080, () => console.log( "Server is running at port 8080" ) )
+
+app.listen( 8000, () => console.log( "Server is running at port 8080" ) )

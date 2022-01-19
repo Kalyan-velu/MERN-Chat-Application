@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Button, Grid, Paper, TextField, Typography} from "@mui/material";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
+	const [ error, setError ] = useState( null );
 	const navigate = useNavigate();
 	const gridStyle = {
 		display: "grid",
@@ -42,11 +44,20 @@ const Login = () => {
 			.required( "Required" )
 	} )
 
-	const onSubmit = (values, props) => {
+	const onSubmit = async (values, props) => {
+		setError( false )
 		console.log( alert( JSON.stringify( values ), null, 2 ) )
-		navigate( './chats' )
-		props.resetForm()
-	}
+		const response = await axios.post( "http://localhost:8000/api/user/login", values )
+			.catch( (err) => {
+				console.log( err );
+			} );
+		if (response) {
+			navigate( './chats' )
+			props.resetForm()
+		}
+	};
+
+
 	return (
 		<Grid style={gridStyle}>
 			<Formik
@@ -82,6 +93,7 @@ const Login = () => {
 									color={"secondary"}
 								>Fill the form to login into your account
 								</Typography>
+
 							</Grid>
 						</Paper>
 						<div style={{

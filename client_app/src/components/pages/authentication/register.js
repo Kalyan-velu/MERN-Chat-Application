@@ -2,8 +2,16 @@ import React from 'react'
 import {Button, Grid, Paper, TextField, Typography} from '@mui/material'
 import {ErrorMessage, Field, Form, Formik} from 'formik'
 import * as Yup from 'yup'
+import axios from "axios";
+import MuiAlert from '@mui/material/Alert';
+import {useNavigate} from "react-router-dom";
+
+const Alert = React.forwardRef( function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+} );
 
 const Register = () => {
+	const navigate = useNavigate()
 	const gridStyle = {
 		display: "grid",
 		justifyContent: "center",
@@ -45,10 +53,20 @@ const Register = () => {
 			.required( 'Required' ),
 		confirmPassword: Yup.string().oneOf( [ Yup.ref( 'password' ) ], "Password not matches" ).required( 'Required' )
 	} )
-	const onSubmit = (values, props) => {
+
+	const onSubmit = async (values, props) => {
 		console.log( alert( JSON.stringify( values ), null, 2 ) )
-		props.resetForm()
-	}
+		const response = await axios.post( "http://localhost:8000/api/user/register", values )
+			.catch( (err) => {
+				console.log( err );
+				alert( err.response.data.message );
+			} );
+		if (response) {
+			console.log( response )
+			props.resetForm()
+		}
+	};
+
 	return (
 		<Grid style={gridStyle}>
 			<Formik
