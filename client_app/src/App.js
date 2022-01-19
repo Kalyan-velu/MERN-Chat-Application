@@ -12,7 +12,7 @@ function App() {
 		<div className="App">
 			<Suspense fallback={<div style={{color: "red"}} className={"suspense"}>Loading...</div>}>
 				<Routes>
-					<Route path="/app" element={<Homepage/>}/>
+					<Route path="/" exact={true} element={<Homepage/>}/>
 					<Route path="/app/chats" element={<ChatPage/>}/>
 				</Routes>
 			</Suspense>

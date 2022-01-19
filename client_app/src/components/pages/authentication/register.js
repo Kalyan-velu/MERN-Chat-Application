@@ -1,17 +1,21 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Button, Grid, Paper, TextField, Typography} from '@mui/material'
 import {ErrorMessage, Field, Form, Formik} from 'formik'
+import Snackbar from '@mui/material/Snackbar'
 import * as Yup from 'yup'
 import axios from "axios";
 import MuiAlert from '@mui/material/Alert';
-import {useNavigate} from "react-router-dom";
+
 
 const Alert = React.forwardRef( function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 } );
 
 const Register = () => {
-	const navigate = useNavigate()
+	const [ open, setOpen ] = React.useState( false );
+	const [ error, setError ] = useState( " " );
+	const [ success, setSuccess ] = useState( " " );
+
 	const gridStyle = {
 		display: "grid",
 		justifyContent: "center",
@@ -42,11 +46,6 @@ const Register = () => {
 		confirmPassword: ''
 	}
 
-	const [ open, setOpen ] = React.useState( false );
-
-	const handleClick = () => {
-		setOpen( true );
-	};
 
 	const handleClose = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -69,14 +68,14 @@ const Register = () => {
 	} )
 
 	const onSubmit = async (values, props) => {
-		console.log( alert( JSON.stringify( values ), null, 2 ) )
 		const response = await axios.post( "http://localhost:8000/api/user/register", values )
 			.catch( (err) => {
-				console.log( err );
-				alert( err.response.data.message );
+				setError( err.response.data.message );
+				setOpen( true )
+				console.log( err )
 			} );
 		if (response) {
-			console.log( response )
+
 			props.resetForm()
 		}
 	};
@@ -141,6 +140,13 @@ const Register = () => {
 									color="secondary"
 								>Fill the form to create an account
 								</Typography>
+							</Grid>
+							<Grid align='center'>
+								<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+									<Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+										{error}
+									</Alert>
+								</Snackbar>
 							</Grid>
 						</Paper>
 						<div style={{

@@ -74,7 +74,7 @@ export default function Navigation() {
 		setAnchorEl( null );
 	};
 	const logOutHandler = () => {
-		navigate( '/app' )
+		navigate( '/' )
 	}
 	return (
 		<div style={{

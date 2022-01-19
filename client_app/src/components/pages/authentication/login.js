@@ -4,9 +4,18 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef( function Alert(props, ref) {
+	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+} );
 
 const Login = () => {
-	const [ error, setError ] = useState( null );
+	const [ open, setOpen ] = React.useState( false );
+	const [ error, setError ] = useState( " " );
+	const [ success, setSuccess ] = useState( " " );
+
 	const navigate = useNavigate();
 	const gridStyle = {
 		display: "grid",
@@ -30,6 +39,14 @@ const Login = () => {
 
 	const phoneRegExp = /^[1-9]{0}[0-9]{9}/
 	const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+
+	const handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setOpen( false );
+	};
+
 	const initialValues = {
 		phoneNumber: '',
 		password: ''
@@ -45,15 +62,20 @@ const Login = () => {
 	} )
 
 	const onSubmit = async (values, props) => {
-		setError( false )
-		console.log( alert( JSON.stringify( values ), null, 2 ) )
 		const response = await axios.post( "http://localhost:8000/api/user/login", values )
 			.catch( (err) => {
 				console.log( err );
+				setError( response.data.message )
+				setOpen( true )
 			} );
 		if (response) {
-			navigate( './chats' )
-			props.resetForm()
+			setSuccess( response.data.message );
+			setOpen( true )
+
+			setTimeout( function () {
+				navigate( '/app/chats' )
+			}, 5000 )
+
 		}
 	};
 
@@ -93,7 +115,19 @@ const Login = () => {
 									color={"secondary"}
 								>Fill the form to login into your account
 								</Typography>
-
+							</Grid>
+							<Grid align='center'>
+								<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+									<Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
+										{success}
+									</Alert>
+								</Snackbar>
+								{error ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+										<Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+											{error}
+										</Alert>
+									</Snackbar>
+									: " "}
 							</Grid>
 						</Paper>
 						<div style={{

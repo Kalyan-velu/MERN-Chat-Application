@@ -36,7 +36,7 @@ const registerUser = async (require, response) => {
 			message: 'User created successfully'
 		} );
 	} else {
-		response.status( 400 ).json( {
+		response.status( 401 ).json( {
 			message: 'User not created'
 		} );
 	}

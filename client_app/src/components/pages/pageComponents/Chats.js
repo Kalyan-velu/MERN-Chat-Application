@@ -2,20 +2,19 @@ import React from 'react'
 import {Box} from "@mui/system";
 import AddIcon from '@mui/icons-material/Add';
 import Fab from "@mui/material/Fab";
-import {Divider, List, ListItem, Typography} from "@mui/material";
+import {ButtonBase, Divider, List, ListItem, Typography} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 
 
-export default function MyChats() {
+export default function MyChats(props) {
 	return (
 
 		<Box p={3} sx={{
 			display: "flex",
 			flexDirection: "column",
 			backgroundColor: "#d97dff",
-			width: "20%",
-			height: "85%",
-
+			width: "25%",
+			height: "100%",
 			borderWidth: "1px"
 		}}>
 			<Box sx={
@@ -31,29 +30,42 @@ export default function MyChats() {
 			}>
 				<Typography variant={"h5"}>Recent Chat</Typography>
 
-				<div style={{flexGrow: 2}}/>
+				<div style={{flexGrow: 1}}/>
 				<Box>
 					<Delete/>
 				</Box>
 			</Box>
 			<Box
 				sx={{
-					display: "flex",
-					flexDirection: "column",
-					padding: 3,
 					width: "100%",
-					height: "100%",
-					borderRadius: "lg",
-					overflow: "hidden"
+					height: "800px",
+					overflow: "hidden",
 				}}>
-				<List>
-					<ListItem>
-						Helo
-					</ListItem>
-					<Divider/>
-					<ListItem>
-						Helo
-					</ListItem>
+				<List sx={{
+					display: "flex",
+					flexDirection: "column"
+				}}>
+					{props.chats.map(
+						chat => (
+							<ListItem>
+								<ButtonBase
+									sx={{
+										display: "flex",
+										justifyContent: 'left',
+										font: "18px",
+										broderRadius: "10px",
+										backgroundColor: "#111",
+										color: "white",
+										width: "100%",
+										height: "40px"
+									}}
+									key={props.chats.id}>
+									<Typography varient={"h3"}>{chat.chatName}</Typography>
+									<Typography varient={"h4"}>{chat.chatName.users}</Typography>
+								</ButtonBase>
+								<Divider/>
+							</ListItem>
+						) )}
 				</List>
 			</Box>
 
