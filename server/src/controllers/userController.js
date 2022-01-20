@@ -53,11 +53,11 @@ const authUser = async (require, response) => {
 			phoneNumber: user.phoneNumber,
 			pic: user.pic,
 			token: generateToken( user._id ),
-			message: 'User authenticated successfully'
+			message: 'Taking You to our app'
 		} );
 	} else {
 		response.status( 400 ).json( {
-			message: 'User not authenticated'
+			message: 'Unable to login ! Please Check your Credentials'
 		} );
 	}
 

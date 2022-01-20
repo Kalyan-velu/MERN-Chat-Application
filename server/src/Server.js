@@ -52,5 +52,5 @@ app.get( "/api/chat/:id",
 app.use( notFound )
 app.use( errorHandler )
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 4000
 app.listen( PORT, () => console.log( `Server is running at port ${PORT}` ) )

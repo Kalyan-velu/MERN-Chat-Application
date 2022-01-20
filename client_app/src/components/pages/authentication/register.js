@@ -13,8 +13,9 @@ const Alert = React.forwardRef( function Alert(props, ref) {
 
 const Register = () => {
 	const [ open, setOpen ] = React.useState( false );
-	const [ error, setError ] = useState( " " );
-	const [ success, setSuccess ] = useState( " " );
+	const [ openS, setOpenS ] = React.useState( false );
+	const [ error, setError ] = useState( null );
+	const [ success, setSuccess ] = useState( null );
 
 	const gridStyle = {
 		display: "grid",
@@ -51,7 +52,7 @@ const Register = () => {
 		if (reason === 'clickaway') {
 			return;
 		}
-
+		setOpenS( false )
 		setOpen( false );
 	};
 
@@ -73,10 +74,11 @@ const Register = () => {
 				setError( err.response.data.message );
 				setOpen( true )
 				console.log( err )
-			} );
+			} )
 		if (response) {
-
-			props.resetForm()
+			setSuccess( response.data.message );
+			setOpenS( true )
+			localStorage.setItem( "userInfo", JSON.stringify( response ) )
 		}
 	};
 
@@ -135,24 +137,30 @@ const Register = () => {
 								       required/>
 							</div>
 							<Grid align='center'>
-								<Typography
-									variant='caption'
-									color="secondary"
-								>Fill the form to create an account
-								</Typography>
-							</Grid>
-							<Grid align='center'>
-								<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-									<Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
-										{error}
+								<Snackbar open={openS} autoHideDuration={6000} onClose={handleClose}>
+									<Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
+										{success}
 									</Alert>
 								</Snackbar>
+								{error ? <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+										<Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+											{error}
+										</Alert>
+									</Snackbar>
+									: null}
 							</Grid>
 						</Paper>
+						<Grid align='center'>
+							<Typography
+								variant='caption'
+								color="secondary"
+							>Fill the form to create an account
+							</Typography>
+						</Grid>
 						<div style={{
 							display: "flex",
 							justifyContent: "center",
-							padding: "10px"
+							padding: "15px"
 						}}>
 							<Button
 								type='submit'

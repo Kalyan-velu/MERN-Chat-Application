@@ -13,8 +13,9 @@ const Alert = React.forwardRef( function Alert(props, ref) {
 
 const Login = () => {
 	const [ open, setOpen ] = React.useState( false );
-	const [ error, setError ] = useState( " " );
-	const [ success, setSuccess ] = useState( " " );
+	const [ openS, setOpenS ] = React.useState( false );
+	const [ error, setError ] = useState( null );
+	const [ success, setSuccess ] = useState( null );
 
 	const navigate = useNavigate();
 	const gridStyle = {
@@ -44,6 +45,7 @@ const Login = () => {
 		if (reason === 'clickaway') {
 			return;
 		}
+		setOpenS( false );
 		setOpen( false );
 	};
 
@@ -65,23 +67,22 @@ const Login = () => {
 		const response = await axios.post( "http://localhost:8000/api/user/login", values )
 			.catch( (err) => {
 				console.log( err );
-				setError( response.data.message )
+				setError( err.response.data.message )
 				setOpen( true )
 			} );
 		if (response) {
 			setSuccess( response.data.message );
-			setOpen( true )
-
+			setOpenS( true )
+			localStorage.setItem( "userInfo", JSON.stringify( response ) )
 			setTimeout( function () {
-				navigate( '/app/chats' )
-			}, 5000 )
+				navigate( 'app/chats' )
+			}, 3000 )
 
 		}
 	};
 
-
 	return (
-		<Grid style={gridStyle}>
+		<Grid style={gridStyle} id={"suspense"}>
 			<Formik
 				initialValues={initialValues}
 				validationSchema={validationSchema}
@@ -103,21 +104,16 @@ const Login = () => {
 								<Field as={TextField}
 								       padding={"dense"}
 								       margin={"dense"}
+								       type={"password"}
 								       name='password'
 								       label='Enter Password'
 								       fullWidth
 								       error={props.errors.password && props.touched.password}
 								       helperText={<ErrorMessage name='Password'/>} required/>
 							</div>
+
 							<Grid align='center'>
-								<Typography
-									variant='caption'
-									color={"secondary"}
-								>Fill the form to login into your account
-								</Typography>
-							</Grid>
-							<Grid align='center'>
-								<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+								<Snackbar open={openS} autoHideDuration={6000} onClose={handleClose}>
 									<Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
 										{success}
 									</Alert>
@@ -127,9 +123,16 @@ const Login = () => {
 											{error}
 										</Alert>
 									</Snackbar>
-									: " "}
+									: null}
 							</Grid>
 						</Paper>
+						<Grid align='center'>
+							<Typography
+								variant='caption'
+								color={"secondary"}
+							>Fill the form to login into your account
+							</Typography>
+						</Grid>
 						<div style={{
 							display: "flex",
 							justifyContent: "center",
