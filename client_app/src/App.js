@@ -1,11 +1,13 @@
-import React, {lazy, Suspense} from "react";
+import React, {Suspense} from "react";
 import {Route, Routes} from "react-router-dom";
 import lottie from 'lottie-web'
 import loading from '../src/animations/progress-bar.json'
 import "./App.css";
+import ErrorFallback from "./errorBoundary/errorBoundary";
+import {ErrorBoundary} from "react-error-boundary";
 
-const ChatPage = lazy( () => import("./components/pages/chats/ChatPage") )
-const Homepage = lazy( () => import ("./components/pages/Homepage") )
+const ChatPage = React.lazy( () => import("./components/pages/chats/ChatPage") )
+const Homepage = React.lazy( () => import ("./components/pages/Homepage") )
 
 
 function App() {
@@ -26,11 +28,13 @@ function App() {
 			                         height: "100px"
 		                         }}/>}>
 			<div className="App">
-
-				<Routes>
-					<Route path="/" exact={true} element={<Homepage/>}/>
-					<Route path="/app/chats" element={<ChatPage/>}/>
-				</Routes>
+				<ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {
+				}}>
+					<Routes>
+						<Route path="/" exact={true} element={<Homepage/>}/>
+						<Route path="/app/chats" element={<ChatPage/>}/>
+					</Routes>
+				</ErrorBoundary>
 			</div>
 		</Suspense>
 	);

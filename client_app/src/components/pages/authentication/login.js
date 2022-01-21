@@ -67,14 +67,14 @@ const Login = () => {
 		const response = await axios.post( "http://localhost:8000/api/user/login", values )
 			.catch( (err) => {
 				console.log( err );
-				setError( err.response.message )
+				setError( err.response.data.message )
 				setOpen( true )
 			} );
 		if (response) {
 			setSuccess( response.data.message )
 			console.log( response.data.message )
 			setOpenS( true )
-			localStorage.setItem( "userInfo", JSON.stringify( response ) )
+			localStorage.setItem( "userInfo", JSON.stringify( response.data ) )
 			setTimeout( function () {
 				navigate( 'app/chats' )
 			}, 3000 )
