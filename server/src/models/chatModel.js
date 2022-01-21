@@ -1,7 +1,6 @@
 const mongoose = require( 'mongoose' )
-const {User} = require( "@adminjs/mongoose/lib/test/utils/models" );
 
-const ChatModel = new mongoose.Schema(
+const chatModel = new mongoose.Schema(
 	{
 		chatName: {
 			type: String,
@@ -10,7 +9,7 @@ const ChatModel = new mongoose.Schema(
 		isGroupChat: {type: Boolean, default: false},
 		users: [ {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: User
+			ref: "User"
 		} ],
 		latestMessage: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -19,11 +18,12 @@ const ChatModel = new mongoose.Schema(
 		groupAdmin: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User"
-		},
+		}
 	},
 	{
 		timestamps: true,
 	}
 )
-const Chat = mongoose.model( "Chat", ChatModel )
-module.exports = Chat;
+module.exports = mongoose.model( "Chat", chatModel )
+
+

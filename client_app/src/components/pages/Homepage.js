@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, {Suspense, useEffect} from 'react';
 import {Box, styled} from '@mui/system';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
@@ -7,6 +7,7 @@ import {buttonUnstyledClasses} from '@mui/base/ButtonUnstyled';
 import TabUnstyled, {tabUnstyledClasses} from '@mui/base/TabUnstyled';
 import {Container, Typography} from "@mui/material";
 import {FavoriteBorderOutlined} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 const Register = React.lazy( () => import  ("./authentication/register") );
 const Login = React.lazy( () => import  ("./authentication/login") );
@@ -80,7 +81,12 @@ const TabsList = styled( TabsListUnstyled )`
 `;
 
 export default function Homepage() {
+	const navigate = useNavigate()
+	useEffect( () => {
+		const user = JSON.parse( localStorage.getItem( "userInfo" ) )
 
+		if (user) navigate( "/app/chats" )
+	}, [ navigate ] );
 
 	return (
 		<>

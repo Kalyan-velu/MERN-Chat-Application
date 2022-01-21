@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Box} from "@mui/system";
 import {alpha, styled} from '@mui/material/styles';
 import {
@@ -17,6 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import {FeedbackOutlined, Logout, Notifications} from "@mui/icons-material";
 import Img from "../pages/pageComponents/index.png"
 import {useNavigate} from "react-router-dom";
+import ProfileModal from "../pages/pageComponents/profileModal";
 
 
 const Search = styled( 'div' )( ({theme}) => ({
@@ -63,6 +64,10 @@ const StyledInputBase = styled( InputBase )( ({theme}) => ({
 
 
 export default function Navigation() {
+	const [ search, setSearch ] = useState( " " );
+	const [ searchResult, setSearchResult ] = useState( [] );
+	const [ loading, setLoading ] = useState( false );
+	const [ loadingChat, setLoadingChat ] = useState();
 	const [ anchorEl, setAnchorEl ] = React.useState( false );
 	const openM = Boolean( anchorEl );
 	const navigate = useNavigate();
@@ -74,6 +79,7 @@ export default function Navigation() {
 		setAnchorEl( null );
 	};
 	const logOutHandler = () => {
+		localStorage.removeItem( "userInfo" )
 		navigate( '/' )
 	}
 	return (
@@ -92,6 +98,7 @@ export default function Navigation() {
 								<SearchIcon sx={{color: "#acadad"}}/>
 							</SearchIconWrapper>
 							<StyledInputBase
+
 								placeholder="Search For User…"
 								inputProps={{'aria-label': 'search'}}
 							/>
@@ -106,7 +113,7 @@ export default function Navigation() {
 						component="div"
 						sx={{display: {xs: 'none', sm: 'block'}, color: "#acadad"}}
 					>
-						Social Chat
+						Chat
 					</Typography>
 					<div style={{flexGrow: 1}}/>
 					<div>
@@ -143,7 +150,6 @@ export default function Navigation() {
 					id="account-menu"
 					open={openM}
 					onClose={handleClose}
-					onClick={handleClose}
 					PaperProps={{
 						elevation: 0,
 						sx: {
@@ -172,11 +178,15 @@ export default function Navigation() {
 					}}
 					transformOrigin={{horizontal: 'right', vertical: 'top'}}
 					anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}>
+
 					<MenuItem>
-						<Avatar
-							sx={{width: 24, height: 24}}
-							alt="Remy Sharp" src={Img}/> Profile
+						<ProfileModal>
+							<Avatar
+								sx={{width: 24, height: 24}}
+								alt="Remy Sharp" src={Img}/> Profile
+						</ProfileModal>
 					</MenuItem>
+
 					<MenuItem>
 						<Avatar
 							sx={{width: 24, height: 24}}

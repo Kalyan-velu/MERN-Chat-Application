@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
+import ChatProvider from "./components/context/ChatProvider";
 
 ReactDOM.render(
-	<React.StrictMode>
-		<BrowserRouter>
+	<BrowserRouter>
+		<ChatProvider>
 			<App/>
-		</BrowserRouter>
-	</React.StrictMode>,
+		</ChatProvider>
+	</BrowserRouter>,
+
 	document.getElementById( 'root' )
 );
 

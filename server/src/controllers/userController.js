@@ -60,9 +60,24 @@ const authUser = async (require, response) => {
 			message: 'Unable to login ! Please Check your Credentials'
 		} );
 	}
+}
 
+const allUsers = async (request, respond) => {
+	{
+		const keyword = request.query.search ? {
+				$or: [
+					{username: {$regex: request.query.search, $options: "i"}},
+					{phoneNumber: {$regex: request.query.search, $options: "i"}}
+				]
+			} :
+			{};
+		const users = await User.find( keyword )
+			.find( {_id: {$ne: request.user._id}} )
+		respond.send( users )
+	}
 }
 module.exports = {
 	registerUser: expressAsyncHandler( registerUser ),
-	authUser: expressAsyncHandler( authUser )
+	authUser: expressAsyncHandler( authUser ),
+	allUsers: expressAsyncHandler( allUsers )
 }
