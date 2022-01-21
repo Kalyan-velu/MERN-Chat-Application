@@ -67,11 +67,12 @@ const Login = () => {
 		const response = await axios.post( "http://localhost:8000/api/user/login", values )
 			.catch( (err) => {
 				console.log( err );
-				setError( err.response.data.message )
+				setError( err.response.message )
 				setOpen( true )
 			} );
 		if (response) {
-			setSuccess( response.data.message );
+			setSuccess( response.data.message )
+			console.log( response.data.message )
 			setOpenS( true )
 			localStorage.setItem( "userInfo", JSON.stringify( response ) )
 			setTimeout( function () {
@@ -148,7 +149,6 @@ const Login = () => {
 						</div>
 					</Form>)}
 			</Formik>
-
 		</Grid>
 	)
 }

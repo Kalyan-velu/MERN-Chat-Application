@@ -1,10 +1,8 @@
-POST http://localhost:8000/app/auth/register
+POST http://localhost:8000/api/user/login
 Accept: application/json
 
 {
- "userName":"Velu",
- "phoneNumber":"9101725446",
- "passWord":"delink"
+
 }
 
 ###

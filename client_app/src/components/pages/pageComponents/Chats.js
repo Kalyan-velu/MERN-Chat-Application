@@ -6,7 +6,7 @@ import {ButtonBase, Divider, List, ListItem, Typography} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 
 
-export default function MyChats(props) {
+export default function MyChats() {
 	return (
 
 		<Box p={3} sx={{
@@ -45,27 +45,25 @@ export default function MyChats(props) {
 					display: "flex",
 					flexDirection: "column"
 				}}>
-					{props.chats.map(
-						chat => (
-							<ListItem>
-								<ButtonBase
-									sx={{
-										display: "flex",
-										justifyContent: 'left',
-										font: "18px",
-										broderRadius: "10px",
-										backgroundColor: "#111",
-										color: "white",
-										width: "100%",
-										height: "40px"
-									}}
-									key={props.chats.id}>
-									<Typography varient={"h3"}>{chat.chatName}</Typography>
-									<Typography varient={"h4"}>{chat.chatName.users}</Typography>
-								</ButtonBase>
-								<Divider/>
-							</ListItem>
-						) )}
+					<ListItem>
+						<ButtonBase
+							sx={{
+								display: "flex",
+								justifyContent: 'left',
+								font: "18px",
+								broderRadius: "10px",
+								backgroundColor: "#111",
+								color: "white",
+								width: "100%",
+								height: "40px"
+							}}
+						>
+							<Typography varient={"h3"}>hu</Typography>
+							<Typography varient={"h4"}>gyg</Typography>
+						</ButtonBase>
+						<Divider/>
+					</ListItem>
+					) )}
 				</List>
 			</Box>
 

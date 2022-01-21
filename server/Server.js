@@ -1,15 +1,14 @@
 const express = require( 'express' )
-const app = express()
 const mongoose = require( 'mongoose' )
 const dotenv = require( 'dotenv' )
 const helmet = require( 'helmet' )
+const bodyParser = require( "body-parser" );
 const morgan = require( 'morgan' )
 const cors = require( 'cors' )
-const userRoutes = require( './routes/userRouter' )
-const adminRoutes = require( './routes/admin.route' )
-const {chats} = require( './data/chats' )
-const bodyParser = require( "body-parser" );
-const {notFound, errorHandler} = require( "./middleware/errorMiddleware" );
+const userRoutes = require( './src/routes/userRouter' )
+const chatRoutes = require( './src/routes/chatRouter' )
+const {notFound, errorHandler} = require( "./src/middleware/errorMiddleware" );
+const app = express()
 
 dotenv.config()
 //connecting MongoDb
@@ -20,6 +19,7 @@ mongoose.connect(
 	} )
 //middleware
 app.use( bodyParser.json() )
+//to accept JSON data
 app.use( express.json() )
 app.use( express.urlencoded( {extended: true} ) )
 app.use( helmet() )
@@ -33,22 +33,16 @@ const allowCrossDomain = function (req, res, next) {
 	next();
 };
 app.use( allowCrossDomain );
+
+//routes
+
 app.get( "/", (req, res) => {
 	res.json( {message: "Welcome to  application."} );
 } );
-app.use( `/admin`, adminRoutes )
 app.use( `/api/user`, userRoutes )
-app.get( "/api/chat",
-	(req, res) => {
-		res.send( chats )
-	} )
+app.use( "/api/chat", chatRoutes )
 
-app.get( "/api/chat/:id",
-	(req, res) => {
-		console.log( req.params.id );
-		const singleChat = chats.find( chats => chats._id === req.params.id )
-		res.send( singleChat )
-	} )
+//error handlers
 app.use( notFound )
 app.use( errorHandler )
 

@@ -1,8 +1,9 @@
 const User = require( "../models/userModel" )
-const {registerUser, authUser} = require( "../controllers/userController" );
+const {registerUser, authUser, allUsers} = require( "../controllers/userController" );
+const {protect} = require( "../middleware/authMiddleware" );
 const router = require( 'express' ).Router()
 
-router.route( '/register' ).post( registerUser )
+router.route( '/register' ).post( registerUser ).get( protect, allUsers )
 router.post( '/login', authUser )
 //update user
 router.put( "/:id", async (req, res) => {
