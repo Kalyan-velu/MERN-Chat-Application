@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import {FeedbackOutlined, Logout, Notifications} from "@mui/icons-material";
-import Img from "../pages/pageComponents/index.png"
 import {useNavigate} from "react-router-dom";
 import ProfileModal from "../pages/pageComponents/profileModal";
+import {ChatState} from "../context/ChatProvider";
 
 
 const Search = styled( 'div' )( ({theme}) => ({
@@ -64,11 +64,13 @@ const StyledInputBase = styled( InputBase )( ({theme}) => ({
 
 
 export default function Navigation() {
+
 	const [ search, setSearch ] = useState( " " );
 	const [ searchResult, setSearchResult ] = useState( [] );
 	const [ loading, setLoading ] = useState( false );
 	const [ loadingChat, setLoadingChat ] = useState();
 	const [ anchorEl, setAnchorEl ] = React.useState( false );
+	const {user} = ChatState()
 	const openM = Boolean( anchorEl );
 	const navigate = useNavigate();
 
@@ -140,7 +142,7 @@ export default function Navigation() {
 								aria-label="open drawer"
 								sx={{mr: 2}}
 							>
-								<Avatar alt="Remy Sharp" src={Img}/>
+								<Avatar alt={user.username} src={user.pic}/>
 							</IconButton>
 						</Tooltip>
 					</div>
@@ -180,17 +182,16 @@ export default function Navigation() {
 					anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}>
 
 					<MenuItem>
-						<ProfileModal>
-							<Avatar
-								sx={{width: 24, height: 24}}
-								alt="Remy Sharp" src={Img}/> Profile
+						<ProfileModal
+							user={user}>
+							Profile
 						</ProfileModal>
 					</MenuItem>
 
 					<MenuItem>
 						<Avatar
 							sx={{width: 24, height: 24}}
-							alt="Remy Sharp" src={Img}/> My account
+							alt="Remy Sharp" src={user.pic}/> My account
 					</MenuItem>
 					<Divider/>
 					<MenuItem>

@@ -3,6 +3,9 @@ import Modal from '@mui/material/Modal';
 import {Button, Typography} from "@mui/material";
 import {Box} from "@mui/system";
 import {AccessAlarm} from "@mui/icons-material";
+import {ErrorBoundary} from "react-error-boundary";
+import ErrorFallback from "../../../errorBoundary/errorBoundary";
+
 
 const style = {
 	position: 'absolute',
@@ -23,21 +26,26 @@ export default function ProfileModal({user, children}) {
 
 	return (
 		<>
-			<div>
-				{children ? (
-					<Button onClick={handleOpen}>Profile</Button>
-				) : (<AccessAlarm/>)}
+			<ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {
+			}}>
+				<div>
+					{children ? (
+						<Button onClick={handleOpen}>Profile</Button>
+					) : (<AccessAlarm/>)}
 
-				<Modal
-					open={open}
-					onClose={handleClose}
-					aria-labelledby="modal-modal-title"
-					aria-describedby="modal-modal-description"
-				><Box sx={style}>
-					<Typography varient={"h1"}>{user.username}</Typography>
-				</Box>
-				</Modal>
-			</div>
+					<Modal
+						open={open}
+						onClose={handleClose}
+						aria-labelledby="modal-modal-title"
+						aria-describedby="modal-modal-description"
+					><Box sx={style}>
+						<Typography varient={"h1"}>{user.username}</Typography>
+						<Typography varient={"h1"}>{user.phoneNumber}</Typography>
+						<img src={user.pic} alt={user.username}/>
+					</Box>
+					</Modal>
+				</div>
+			</ErrorBoundary>
 		</>
 	);
 }
