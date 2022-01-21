@@ -1,14 +1,15 @@
-import * as React from 'react';
+import React, {Suspense} from 'react';
 import {Box, styled} from '@mui/system';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 import {buttonUnstyledClasses} from '@mui/base/ButtonUnstyled';
 import TabUnstyled, {tabUnstyledClasses} from '@mui/base/TabUnstyled';
-import Login from "./authentication/login";
 import {Container, Typography} from "@mui/material";
-import Register from "./authentication/register";
 import {FavoriteBorderOutlined} from "@mui/icons-material";
+
+const Register = React.lazy( () => import  ("./authentication/register") );
+const Login = React.lazy( () => import  ("./authentication/login") );
 
 
 const blue = {
@@ -26,7 +27,7 @@ const blue = {
 
 const Tab = styled( TabUnstyled )`
   font-family: IBM Plex Sans, sans-serif;
-  color: white;
+  color: #fff;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: bold;
@@ -44,15 +45,15 @@ const Tab = styled( TabUnstyled )`
   }
 
   &:focus {
-    color: #fff;
+    color: #0f112d;
     border-radius: 3px;
     outline: 2px solid ${blue[200]};
     outline-offset: 2px;
   }
 
   &.${tabUnstyledClasses.selected} {
-    background-color: ${blue[50]};
-    color: ${blue[600]};
+    background-color: ${blue[100]};
+    color: ${blue[800]};
   }
 
   &.${buttonUnstyledClasses.disabled} {
@@ -69,7 +70,7 @@ const TabPanel = styled( TabPanelUnstyled )`
 
 const TabsList = styled( TabsListUnstyled )`
   min-width: 320px;
-  background-color: ${blue[500]};
+  background-color: ${blue[700]};
   border-radius: 8px;
   margin-bottom: 16px;
   display: flex;
@@ -83,37 +84,43 @@ export default function Homepage() {
 
 	return (
 		<>
-			<Container maxWidth="sm">
+			<Container maxWidth="sm" fixed>
 				<Box
 					sx={{
 						display: 'flex',
 						justifyContent: 'center',
-						p: 3,
 						backgroundColor: "#0f112d",
 						width: '100%',
-						m: '40px 0 15px 0',
+						m: '15px 0 15px 0',
 						borderRadius: '10px',
 						borderWidth: '1px'
 					}}>
-					<Typography variant={'h3'} sx={{color: "#fff"}}>Chat Site</Typography>
+					<Typography variant={'h3'} sx={{color: "#fff", p: 3}}>LChat</Typography>
 				</Box>
-				<Box sx={{
-					backgroundColor: "#0f112d",
-					width: "100%",
-					p: 3,
-					borderRadius: "10px",
-					borderWidth: "1px"
-				}}>
-					<TabsUnstyled defaultValue={0}>
-						<TabsList>
-							<Tab>Sign Up</Tab>
-							<Tab>Log In</Tab>
-						</TabsList>
-						<TabPanel value={0}>{<Register/>}</TabPanel>
-						<TabPanel value={1}>{<Login/>}</TabPanel>
-
-					</TabsUnstyled>
-				</Box>
+				<div style={{display: "flex", justifyContent: "center"}}>
+					<Box sx={{
+						backgroundColor: "#0f112d",
+						width: "sm",
+						p: 3,
+						borderRadius: "10px",
+						borderWidth: "1px"
+					}}>
+						<TabsUnstyled defaultValue={0}>
+							<TabsList>
+								<Tab>Sign Up</Tab>
+								<Tab>Log In</Tab>
+							</TabsList>
+							<Suspense fallback={<div>Loading...</div>}>
+								<TabPanel value={0}>
+									<Register/>
+								</TabPanel>
+								<TabPanel value={1}>
+									<Login/>
+								</TabPanel>
+							</Suspense>
+						</TabsUnstyled>
+					</Box>
+				</div>
 			</Container>
 			<>
 				<div style={{display: "flex", justifyContent: "center",}}>
