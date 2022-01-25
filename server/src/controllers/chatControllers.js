@@ -1,11 +1,10 @@
 const expressAsyncHandler = require( "express-async-handler" );
 const Chat = require( "../models/chatModel" );
 const User = require( "../models/userModel" );
-const {request, response} = require( "express" );
 
 
 const accessChats = async (request, response) => {
-	const {userId} = request.body;
+	const {userId} = request.body.userId;
 
 	if (!userId) {
 		console.log( "UserId params not sent in request" )

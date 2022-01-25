@@ -63,6 +63,11 @@ const Tab = styled( TabUnstyled )`
   }
 `;
 
+const typo = {
+	color: "#fff",
+	fontFamily: [ 'Monoton', 'cursive' ],
+}
+
 const TabPanel = styled( TabPanelUnstyled )`
   width: 100%;
   font-family: IBM Plex Sans, sans-serif;
@@ -84,7 +89,6 @@ export default function Homepage() {
 	const navigate = useNavigate()
 	useEffect( () => {
 		const user = JSON.parse( localStorage.getItem( "userInfo" ) )
-
 		if (user) navigate( "/app/chats" )
 	}, [ navigate ] );
 
@@ -101,7 +105,7 @@ export default function Homepage() {
 						borderRadius: '10px',
 						borderWidth: '1px'
 					}}>
-					<Typography variant={'h3'} sx={{color: "#fff", p: 3}}>LChat</Typography>
+					<Typography variant={'h3'} sx={typo}>LChat</Typography>
 				</Box>
 				<div style={{display: "flex", justifyContent: "center"}}>
 					<Box sx={{

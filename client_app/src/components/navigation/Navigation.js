@@ -1,74 +1,13 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Box} from "@mui/system";
-import {alpha, styled} from '@mui/material/styles';
-import {
-	Avatar,
-	Divider,
-	IconButton,
-	InputBase,
-	ListItemIcon,
-	Menu,
-	MenuItem,
-	Toolbar,
-	Tooltip,
-	Typography
-} from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-import {FeedbackOutlined, Logout, Notifications} from "@mui/icons-material";
+import {Avatar, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography} from "@mui/material";
+import {Logout, Notifications} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
-import ProfileModal from "../pages/pageComponents/profileModal";
+import ProfileModal from "../pages/pageComponents/profileSettings/profileModal";
 import {ChatState} from "../context/ChatProvider";
 
 
-const Search = styled( 'div' )( ({theme}) => ({
-	position: 'relative',
-	borderRadius: theme.shape.borderRadius,
-	backgroundColor: alpha( theme.palette.common.white, 0.15 ),
-	'&:hover': {
-		backgroundColor: alpha( theme.palette.common.white, 0.25 ),
-	},
-	marginLeft: 0,
-	width: '100%',
-	[theme.breakpoints.up( 'sm' )]: {
-		marginLeft: theme.spacing( 1 ),
-		width: 'auto',
-	},
-}) );
-
-const SearchIconWrapper = styled( 'div' )( ({theme}) => ({
-	padding: theme.spacing( 0, 2 ),
-	height: '100%',
-	position: 'absolute',
-	pointerEvents: 'none',
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'center',
-}) );
-
-const StyledInputBase = styled( InputBase )( ({theme}) => ({
-	color: 'inherit',
-	'& .MuiInputBase-input': {
-		padding: theme.spacing( 1, 2, 1, 0 ),
-		// vertical padding + font size from searchIcon
-		paddingLeft: `calc(1em + ${theme.spacing( 4 )})`,
-		transition: theme.transitions.create( 'width' ),
-		width: '100%',
-		[theme.breakpoints.up( 'sm' )]: {
-			width: '14ch',
-			'&:focus': {
-				width: '18ch',
-			},
-		},
-	},
-}) );
-
-
 export default function Navigation() {
-
-	const [ search, setSearch ] = useState( " " );
-	const [ searchResult, setSearchResult ] = useState( [] );
-	const [ loading, setLoading ] = useState( false );
-	const [ loadingChat, setLoadingChat ] = useState();
 	const [ anchorEl, setAnchorEl ] = React.useState( false );
 	const {user} = ChatState()
 	const openM = Boolean( anchorEl );
@@ -86,37 +25,44 @@ export default function Navigation() {
 	}
 	return (
 		<div style={{
-			marginTop: "2px"
+			marginTop: "2px",
+			paddingBottom: "10px"
 		}}>
 			<Box sx={{
 				flexGrow: 1,
-				backgroundColor: "#16034b",
-				borderRadius: "2px"
+				backgroundColor: "#591980",
+				borderRadius: "10px"
 			}}>
 				<Toolbar>
-					<Tooltip title={"Search User to Chat"}>
-						<Search>
-							<SearchIconWrapper>
-								<SearchIcon sx={{color: "#acadad"}}/>
-							</SearchIconWrapper>
-							<StyledInputBase
-
-								placeholder="Search For User…"
-								inputProps={{'aria-label': 'search'}}
-							/>
-						</Search>
-					</Tooltip>
-					<Divider/>
-					<div style={{flexGrow: 1}}/>
 					<Typography
 						variant="h5"
 						position={"static"}
 						noWrap
 						component="div"
-						sx={{display: {xs: 'none', sm: 'block'}, color: "#acadad"}}
+						sx={{
+							color: "#fff",
+							fontFamily: [ 'Monoton', 'cursive' ],
+						}}
 					>
 						Chat
 					</Typography>
+					<div style={{flexGrow: 0.3}}/>
+					<Tooltip title="Account settings">
+						<IconButton
+							onClick={handleClick}
+							size="large"
+							edge="start"
+							color="inherit"
+							aria-controls={openM ? 'account-menu' : undefined}
+							aria-haspopup="true"
+							aria-expanded={openM ? 'true' : undefined}
+							aria-label="open drawer"
+							sx={{mr: 2}}
+						>
+							<Avatar alt={user.username} src={user.pic}/>
+						</IconButton>
+					</Tooltip>
+					<div style={{flexGrow: 1}}/>
 					<div style={{flexGrow: 1}}/>
 					<div>
 						<Tooltip title="Notifications">
@@ -128,21 +74,6 @@ export default function Navigation() {
 								sx={{mr: 2}}>
 								<Notifications sx={{color: "#acadad"}}/>
 
-							</IconButton>
-						</Tooltip>
-						<Tooltip title="Account settings">
-							<IconButton
-								onClick={handleClick}
-								size="large"
-								edge="start"
-								color="inherit"
-								aria-controls={openM ? 'account-menu' : undefined}
-								aria-haspopup="true"
-								aria-expanded={openM ? 'true' : undefined}
-								aria-label="open drawer"
-								sx={{mr: 2}}
-							>
-								<Avatar alt={user.username} src={user.pic}/>
 							</IconButton>
 						</Tooltip>
 					</div>
@@ -157,7 +88,7 @@ export default function Navigation() {
 						sx: {
 							overflow: 'visible',
 							filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-							mt: 1.5,
+							mt: 1,
 							'& .MuiAvatar-root': {
 								width: 22,
 								height: 22,
@@ -170,8 +101,8 @@ export default function Navigation() {
 								position: 'absolute',
 								top: 0,
 								right: 14,
-								width: 10,
-								height: 10,
+								width: 15,
+								height: 15,
 								backgroundColor: 'background.paper',
 								transform: 'translateY(-50%) rotate(45deg)',
 								zIndex: 0,
@@ -182,23 +113,7 @@ export default function Navigation() {
 					anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}>
 
 					<MenuItem>
-						<ProfileModal
-							user={user}>
-							Profile
-						</ProfileModal>
-					</MenuItem>
-
-					<MenuItem>
-						<Avatar
-							sx={{width: 24, height: 24}}
-							alt="Remy Sharp" src={user.pic}/> My account
-					</MenuItem>
-					<Divider/>
-					<MenuItem>
-						<ListItemIcon>
-							<FeedbackOutlined fontSize="small"/>
-						</ListItemIcon>
-						Settings
+						<ProfileModal user={user}/>
 					</MenuItem>
 					<MenuItem onClick={logOutHandler}>
 						<IconButton>

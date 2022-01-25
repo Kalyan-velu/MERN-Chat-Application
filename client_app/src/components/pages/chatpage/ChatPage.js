@@ -5,12 +5,13 @@ import lottie from "lottie-web";
 import loading from "../../../animations/loading-animation.json";
 import {ChatState} from "../../context/ChatProvider";
 
-const MyChats = lazy( () => import("../pageComponents/Chats") )
-const ChatBox = lazy( () => import ("../pageComponents/ChatBox") )
+const MyChats = lazy( () => import("../pageComponents/chats/MyChats") )
+const ChatBox = lazy( () => import ("../pageComponents/chats/ChatBox") )
 
 
 const ChatPage = () => {
 	const {user} = ChatState()
+
 
 	React.useEffect( () => {
 		lottie.loadAnimation( {
@@ -31,7 +32,7 @@ const ChatPage = () => {
 					height: "100%"
 				}}><Suspense style={
 					{}} fallback={<div/>}>
-					<MyChats/>
+					<MyChats user={user}/>
 					<ChatBox/>
 				</Suspense>
 				</Box>}

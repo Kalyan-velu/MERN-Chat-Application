@@ -3,9 +3,9 @@ import {Button, Grid, Paper, TextField, Typography} from "@mui/material";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import {authInstance} from "../../../config/axios";
 
 const Alert = React.forwardRef( function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -64,7 +64,7 @@ const Login = () => {
 	} )
 
 	const onSubmit = async (values, props) => {
-		const response = await axios.post( "http://localhost:8000/api/user/login", values )
+		const response = await authInstance.post( "/login", values )
 			.catch( (err) => {
 				console.log( err );
 				setError( err.response.data.message )
@@ -72,12 +72,11 @@ const Login = () => {
 			} );
 		if (response) {
 			setSuccess( response.data.message )
-			console.log( response.data.message )
 			setOpenS( true )
 			localStorage.setItem( "userInfo", JSON.stringify( response.data ) )
 			setTimeout( function () {
 				navigate( 'app/chats' )
-			}, 3000 )
+			}, 1000 )
 
 		}
 	};
