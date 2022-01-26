@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import {render, screen} from '@testing-library/react';
+import Homepage from "./components/pages/Homepage";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+
+test( 'renders authorization page', () => {
+	render( <Homepage/> );
+	const authorization = screen.getAllText( /login/i )
+	expect( authorization ).toBeInTheDocument()
+
+} )

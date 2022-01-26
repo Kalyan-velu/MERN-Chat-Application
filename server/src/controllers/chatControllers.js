@@ -1,28 +1,32 @@
 const expressAsyncHandler = require( "express-async-handler" );
 const Chat = require( "../models/chatModel" );
 const User = require( "../models/userModel" );
-const {request, response} = require( "express" );
 
 
-const accessChats = async (request, response) => {
-	const {userId} = request.body;
+const accessChat = async (request, response) => {
+	const {userId} = request.body
 
 	if (!userId) {
-		console.log( "UserId params not sent in request" )
+		console.log( "UserId is not sent" )
 		return response.sendStatus( 400 )
 	}
-
 	var isChat = await Chat.find( {
 		isGroupChat: false,
+		//should satisfy both conditions
 		$and: [
-			{users: {$elemMatch: {$eq: request.user._id}}},
-			{users: {$elemMatch: {$eq: userId}}},
+			{
+				users: {$elemMatch: {$eq: request.user._id}}
+			},
+			{
+				users: {$elemMatch: {$eq: userId}}
+			},
 		]
-	} ).populate( "users", "-password" ).populate( "latestMessage" );
+	} ).populate( "users", "-password" )
+		.populate( "latestMessage" )
 
 	isChat = await User.populate( isChat, {
 		path: "latestMessage.sender",
-		select: "username phoneNumber pic",
+		select: "username pic phoneNumber",
 	} )
 	if (isChat.length > 0) {
 		response.send( isChat[0] )
@@ -34,13 +38,18 @@ const accessChats = async (request, response) => {
 		}
 		try {
 			const createdChat = await Chat.create( chatData );
-			const FullChat = await Chat.findOne( {_id: createdChat._id} ).populate( "users", "-password" )
-			response.send( FullChat ).status( 200 )
+			const FullChat = await Chat.findOne( {_id: createdChat._id} ).populate(
+				"users",
+				"-password"
+			)
+			response.status( 200 ).send( FullChat )
 		} catch (e) {
-			response.status( 400 );
-			throw new Error( e.message )
+			console.log( e )
+			response.status( 400 )
 		}
 	}
+
+
 }
 
 const fetchChats = async (request, response) => {
@@ -66,7 +75,7 @@ const fetchChats = async (request, response) => {
 }
 
 const createGroupChat = async (request, response) => {
-	if (!request.body.users || !request.body.username) {
+	if (!request.body.users || !request.body.groupname) {
 		return response.status( 400 ).send( {message: "Please fill all the fields"} )
 	}
 
@@ -80,7 +89,7 @@ const createGroupChat = async (request, response) => {
 	try {
 		const groupChat = await Chat.create(
 			{
-				chatName: request.body.username,
+				chatName: request.body.groupname,
 				users: users,
 				isGroupChat: true,
 				groupAdmin: request.user,
@@ -138,22 +147,22 @@ const addToGroup = async (request, response) => {
 const removeFromGroup = async (request, response) => {
 	const {chatId, userId} = request.body
 
-	const added = await Chat.findByIdAndUpdate( chatId, {
-			$push: {
+	const removed = await Chat.findByIdAndUpdate( chatId, {
+			$pull: {
 				users: userId
 			}
 		}, {new: true} )
 		.populate( "users", "-password" )
 		.populate( "groupAdmin", "-password" )
-	if (!added) {
+	if (!removed) {
 		response.status( 404 );
 		throw new Error( "Chat Not Found" )
 	} else {
-		response.json( added )
+		response.json( removed )
 	}
 }
 module.exports = {
-	accessChats: expressAsyncHandler( accessChats ),
+	accessChat: expressAsyncHandler( accessChat ),
 	fetchChats: expressAsyncHandler( fetchChats ),
 	createGroupChat: expressAsyncHandler( createGroupChat ),
 	renameGroupChat: expressAsyncHandler( renameGroupChat ),

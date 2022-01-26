@@ -63,19 +63,23 @@ const authUser = async (require, response) => {
 }
 
 const allUsers = async (request, respond) => {
-	{
-		const keyword = request.query.search ? {
-				$or: [
-					{username: {$regex: request.query.search, $options: "i"}},
-					{phoneNumber: {$regex: request.query.search, $options: "i"}}
-				]
-			} :
-			{};
-		const users = await User.find( keyword )
-			.find( {_id: {$ne: request.user._id}} )
-		respond.send( users )
-	}
+	const keyword = request.query.search ? {
+		$or: [
+			{
+				//matching patterns with  regex
+				username: {$regex: request.query.search, $options: "i"}
+			},
+			{
+				phoneNumber: {$regex: request.query.search, $options: "i"}
+			}
+		]
+	} : {};
+	//Not to show current logged-in User
+	const users = await User.find( keyword ).find( {_id: {$ne: request.user._id}} )
+	respond.send( users )
 }
+
+
 module.exports = {
 	registerUser: expressAsyncHandler( registerUser ),
 	authUser: expressAsyncHandler( authUser ),

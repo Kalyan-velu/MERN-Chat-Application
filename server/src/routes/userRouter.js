@@ -3,7 +3,8 @@ const {registerUser, authUser, allUsers} = require( "../controllers/userControll
 const {protect} = require( "../middleware/authMiddleware" );
 const router = require( 'express' ).Router()
 
-router.route( '/register' ).post( registerUser ).get( protect, allUsers )
+router.route( '/' ).post( registerUser ).get( protect, allUsers )
+
 router.post( '/login', authUser )
 //update user
 router.put( "/:id", async (req, res) => {

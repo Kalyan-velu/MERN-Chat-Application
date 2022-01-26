@@ -39,7 +39,7 @@ app.use( allowCrossDomain );
 app.get( "/", (req, res) => {
 	res.json( {message: "Welcome to  application."} );
 } );
-app.use( `/api/user`, userRoutes )
+app.use( "/api/user", userRoutes )
 app.use( "/api/chat", chatRoutes )
 
 //error handlers
