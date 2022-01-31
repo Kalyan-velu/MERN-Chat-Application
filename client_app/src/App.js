@@ -6,7 +6,7 @@ import "./App.css";
 import ErrorFallback from "./errorBoundary/errorBoundary";
 import {ErrorBoundary} from "react-error-boundary";
 
-const ChatPage = React.lazy( () => import("./components/pages/chatpage/ChatPage") )
+const ChatPage = React.lazy( () => import("./components/pages/ChatPage") )
 const Homepage = React.lazy( () => import ("./components/pages/Homepage") )
 
 

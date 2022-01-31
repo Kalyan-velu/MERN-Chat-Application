@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useState} from 'react';
 import Modal from '@mui/material/Modal';
-import {Button, IconButton, TextField, Typography} from "@mui/material";
+import {Avatar, Button, IconButton, TextField, Tooltip, Typography} from "@mui/material";
 import {Box} from "@mui/system";
 import {AccessAlarm} from "@mui/icons-material";
 import {ErrorBoundary} from "react-error-boundary";
@@ -38,7 +38,21 @@ export default function ProfileModal({user, children}) {
 				<div>
 					{children ? (<IconButton onClick={handleOpen}><AccessAlarm/></IconButton>
 
-					) : (<Button onClick={handleOpen}>Profile</Button>)}
+					) : (<Tooltip title="Account settings">
+						<IconButton
+							onClick={handleOpen}
+							size="large"
+							edge="start"
+							color="inherit"
+							aria-controls={open ? 'account-menu' : undefined}
+							aria-haspopup="true"
+							aria-expanded={open ? 'true' : undefined}
+							aria-label="open drawer"
+							sx={{mr: 2}}
+						>
+							<Avatar alt={user.username} src={user.pic}/>
+						</IconButton>
+					</Tooltip>)}
 
 					<Modal
 						open={open}

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Box} from "@mui/system";
-import {Avatar, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography} from "@mui/material";
+import {IconButton, Toolbar, Tooltip, Typography} from "@mui/material";
 import {Logout, Notifications} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 import ProfileModal from "../pages/pageComponents/profileSettings/profileModal";
@@ -25,15 +25,17 @@ export default function Navigation() {
 	}
 	return (
 		<div style={{
+			width: "23%",
 			marginTop: "2px",
-			paddingBottom: "10px"
 		}}>
 			<Box sx={{
 				flexGrow: 1,
 				backgroundColor: "#591980",
-				borderRadius: "10px"
-			}}>
+				borderRadius: "10px 0 0 0"
+			}}
+			     fixed>
 				<Toolbar>
+					<ProfileModal user={user}/>
 					<Typography
 						variant="h5"
 						position={"static"}
@@ -46,22 +48,6 @@ export default function Navigation() {
 					>
 						Chat
 					</Typography>
-					<div style={{flexGrow: 0.3}}/>
-					<Tooltip title="Account settings">
-						<IconButton
-							onClick={handleClick}
-							size="large"
-							edge="start"
-							color="inherit"
-							aria-controls={openM ? 'account-menu' : undefined}
-							aria-haspopup="true"
-							aria-expanded={openM ? 'true' : undefined}
-							aria-label="open drawer"
-							sx={{mr: 2}}
-						>
-							<Avatar alt={user.username} src={user.pic}/>
-						</IconButton>
-					</Tooltip>
 					<div style={{flexGrow: 1}}/>
 					<div style={{flexGrow: 1}}/>
 					<div>
@@ -76,52 +62,14 @@ export default function Navigation() {
 
 							</IconButton>
 						</Tooltip>
+						<Tooltip title="Log Out">
+							<IconButton onClick={logOutHandler}>
+								<Logout fontSize="small"/>
+							</IconButton>
+						</Tooltip>
 					</div>
 				</Toolbar>
-				<Menu
-					anchorEl={anchorEl}
-					id="account-menu"
-					open={openM}
-					onClose={handleClose}
-					PaperProps={{
-						elevation: 0,
-						sx: {
-							overflow: 'visible',
-							filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-							mt: 1,
-							'& .MuiAvatar-root': {
-								width: 22,
-								height: 22,
-								ml: -0.5,
-								mr: 1,
-							},
-							'&:before': {
-								content: '""',
-								display: 'block',
-								position: 'absolute',
-								top: 0,
-								right: 14,
-								width: 15,
-								height: 15,
-								backgroundColor: 'background.paper',
-								transform: 'translateY(-50%) rotate(45deg)',
-								zIndex: 0,
-							},
-						},
-					}}
-					transformOrigin={{horizontal: 'right', vertical: 'top'}}
-					anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}>
 
-					<MenuItem>
-						<ProfileModal user={user}/>
-					</MenuItem>
-					<MenuItem onClick={logOutHandler}>
-						<IconButton>
-							<Logout fontSize="small"/>
-						</IconButton>
-						Logout
-					</MenuItem>
-				</Menu>
 			</Box>
 
 		</div>

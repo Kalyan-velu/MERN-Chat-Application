@@ -1,12 +1,12 @@
 import React, {lazy, Suspense} from 'react'
 import {Box} from "@mui/system";
-import Navigation from "../../navigation/Navigation";
+import Navigation from "../navigation/Navigation";
 import lottie from "lottie-web";
-import loading from "../../../animations/loading-animation.json";
-import {ChatState} from "../../context/ChatProvider";
+import loading from "../../animations/loading-animation.json";
+import {ChatState} from "../context/ChatProvider";
 
-const MyChats = lazy( () => import("../pageComponents/chats/MyChats") )
-const ChatBox = lazy( () => import ("../pageComponents/chats/ChatBox") )
+const MyChats = lazy( () => import("./pageComponents/chats/MyChats") )
+const ChatBox = lazy( () => import ("./pageComponents/chats/ChatBox") )
 
 
 const ChatPage = () => {

@@ -78,7 +78,6 @@ const Register = () => {
 		if (response) {
 			setSuccess( response.data.message );
 			setOpenS( true )
-			localStorage.setItem( "userInfo", JSON.stringify( response ) )
 		}
 	};
 

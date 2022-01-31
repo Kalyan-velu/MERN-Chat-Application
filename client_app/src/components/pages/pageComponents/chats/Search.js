@@ -1,23 +1,23 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Typography from '@mui/material/Typography';
-import {Button, IconButton} from "@mui/material";
 import {alpha, styled} from "@mui/material/styles";
+import LoadingButton from '@mui/lab/LoadingButton'
 import InputBase from "@mui/material/InputBase";
 import {SearchTwoTone} from "@mui/icons-material";
 import {ChatState} from "../../../context/ChatProvider";
-import {authInstance} from "../../../../config/axios";
+import {authInstance, chatInstance} from "../../../../config/axios";
 import ChatLoading from "../loading/ChatLoading";
 import UserListItem from "../userAvater/UserList";
+import {purple} from '@mui/material/colors';
 
 
 const Search = styled( 'div' )( ({theme}) => ({
 	position: 'relative',
-	borderRadius: theme.shape.borderRadius,
-	backgroundColor: alpha( theme.palette.common.white, 0.15 ),
+	borderRadius: "30px",
+	backgroundColor: alpha( theme.palette.common.white, 0.70 ),
 	'&:hover': {
-		backgroundColor: alpha( theme.palette.common.white, 0.25 ),
+		backgroundColor: alpha( theme.palette.common.white, 1 ),
 	},
 	marginLeft: 0,
 	width: '100%',
@@ -46,29 +46,42 @@ const StyledInputBase = styled( InputBase )( ({theme}) => ({
 		transition: theme.transitions.create( 'width' ),
 		width: '100%',
 		[theme.breakpoints.up( 'sm' )]: {
-			width: '12ch',
+			width: '100%',
 		},
+		borderRadius: "30px",
 	},
 }) );
 
 const style = {
+	backgroundColor: "#ECF1F2",
 	position: 'absolute',
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
 	width: 400,
-	bgcolor: 'background.paper',
+	height: 250,
 	border: '1px solid #5325g',
 	borderRadius: "8px",
 	boxShadow: 24,
 	p: 4,
+	overflow: "auto"
 };
 
-export default function SearchModal() {
+
+const ColorButton = styled( LoadingButton )( () => ({
+	backgroundColor: purple[500],
+	'&:hover': {
+		backgroundColor: purple[200],
+	},
+
+}) );
+
+export default function SearchModal(props) {
 	const [ open, setOpen ] = React.useState( false );
+
 	const [ search, setSearch ] = React.useState( '' );
 	const [ searchResults, setSearchResults ] = React.useState( [] );
-	const [ error, setError ] = React.useState( null );
+
 	const [ loading, setLoading ] = React.useState( false );
 	const {setSelectedChat, user, chats, setChats} = ChatState()
 
@@ -77,31 +90,54 @@ export default function SearchModal() {
 
 	const handleSearch = async () => {
 		if (!search) {
-			setError( "Please Enter Something" )
+			props.setOpenE( true )
+			props.setError( "Please Enter Something" )
+			setOpen( false )
 		}
 
 		try {
 			setLoading( true )
 
-			const response = await authInstance.get( `http://localhost:8000/api/user?search=${search}`,
+			const response = await authInstance.get( `?search=${search}`,
 				{
 					headers: {Authorization: `Bearer ${user.token}`}
 				} )
-			console.log( response.data )
 			setLoading( false )
 			setSearchResults( response.data )
-			console.log( search )
 		} catch (err) {
 			console.log( err )
 		}
 	}
 	const accessChat = async (userId) => {
 		console.log( userId )
+		try {
+			const response = await chatInstance.post( `/`, {userId},
+				{headers: {Authorization: `Bearer ${user.token}`}} );
+			if (!chats.find( (c) => c._id === response.data._id ))
+				setChats( [ response.data, ...chats ] );
+			setSelectedChat( response.data )
+			handleClose()
+		} catch (e) {
+			props.setOpenE( true )
+			props.setError( e`Unable to create` )
+		}
 	}
 
 	return (
 		<div>
-			<IconButton onClick={handleOpen}> <SearchTwoTone/></IconButton>
+			<Search onClick={handleOpen}>
+				<SearchIconWrapper>
+					<SearchTwoTone/>
+				</SearchIconWrapper>
+				<StyledInputBase
+					value={search}
+					onChange={(e) => {
+						setSearch( e.target.value )
+					}}
+					placeholder="Search or Start a new chat...."
+					inputProps={{'aria-label': 'search'}}
+				/>
+			</Search>
 			<Modal
 				keepMounted
 				open={open}
@@ -110,9 +146,7 @@ export default function SearchModal() {
 				aria-describedby="keep-mounted-modal-description"
 			>
 				<Box sx={style}>
-					<Typography id="keep-mounted-modal-title" variant="h6" component="h2">
-						Search
-					</Typography>
+
 					<Search>
 						<SearchIconWrapper>
 							<SearchTwoTone/>
@@ -122,22 +156,42 @@ export default function SearchModal() {
 							onChange={(e) => {
 								setSearch( e.target.value )
 							}}
-							placeholder="Search…"
+							placeholder="Search or start a new chat..."
 							inputProps={{'aria-label': 'search'}}
 						/>
 					</Search>
-					<Button fullWidth onClick={handleSearch}>Search</Button>
-					<Box sx={{backgroundColor: "#fff"}}>
-						{
-							loading ? (<ChatLoading/>) : (
-								searchResults?.map( (user) => (
-									<UserListItem
+					<div style={{
+						display: "grid",
+						justifyContent: "center",
+						marginTop: "22px"
+					}}>
+						<ColorButton
+							loading={loading}
+							onClick={handleSearch}
+						>
+							Search
+						</ColorButton>
+					</div>
+
+					<Box
+						sx={
+							{
+								width: "300px"
+							}}
+					>
+						{loading ? (<ChatLoading/>) :
+							(searchResults?.map
+								( (user) =>
+									(<UserListItem
+										onClose={handleClose}
 										key={user._id}
 										user={user}
-										handleFunction={() => accessChat( user._id )}/>
-								) )
+										handleFunction={() => accessChat( user._id )}
+									/>)
+								)
 							)
 						}
+
 					</Box>
 				</Box>
 			</Modal>
