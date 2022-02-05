@@ -1,5 +1,5 @@
 import {Avatar, Box, Typography} from "@mui/material"
-import {ChatState} from "../../context/ChatProvider";
+import {ChatState} from "../../../context/ChatProvider";
 
 const UserListItem = ({handleFunction}) => {
 	const {user} = ChatState()

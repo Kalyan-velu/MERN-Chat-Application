@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
-import {Button, Grid, Paper, TextField, Typography} from "@mui/material";
+import {Grid, Paper, TextField, Typography} from "@mui/material";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {useNavigate} from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import {authInstance} from "../../../config/axios";
+import LoadingButton from '@mui/lab/LoadingButton';
+import {authInstance} from "../../../../config/axios";
 
 const Alert = React.forwardRef( function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -13,6 +14,7 @@ const Alert = React.forwardRef( function Alert(props, ref) {
 
 const Login = () => {
 	const [ open, setOpen ] = React.useState( false );
+
 	const [ openS, setOpenS ] = React.useState( false );
 	const [ error, setError ] = useState( null );
 	const [ success, setSuccess ] = useState( null );
@@ -49,6 +51,7 @@ const Login = () => {
 		setOpen( false );
 	};
 
+
 	const initialValues = {
 		phoneNumber: '',
 		password: ''
@@ -63,7 +66,7 @@ const Login = () => {
 			.required( "Required" )
 	} )
 
-	const onSubmit = async (values, props) => {
+	const onSubmit = async (values) => {
 		const response = await authInstance.post( "/login", values )
 			.catch( (err) => {
 				console.log( err );
@@ -71,6 +74,8 @@ const Login = () => {
 				setOpen( true )
 			} );
 		if (response) {
+			console.log( `Data in localstorage:${response.data}` )
+
 			setSuccess( response.data.message )
 			setOpenS( true )
 			localStorage.setItem( "userInfo", JSON.stringify( response.data ) )
@@ -138,13 +143,13 @@ const Login = () => {
 							justifyContent: "center",
 							padding: "20px"
 						}}>
-							<Button
+							<LoadingButton
 								type='submit'
 								style={btnStyle}
 								variant='outlined'
 							>
 								login
-							</Button>
+							</LoadingButton>
 						</div>
 					</Form>)}
 			</Formik>
