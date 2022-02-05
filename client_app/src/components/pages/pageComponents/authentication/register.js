@@ -68,7 +68,7 @@ const Register = () => {
 		confirmPassword: Yup.string().oneOf( [ Yup.ref( 'password' ) ], "Password not matches" ).required( 'Required' )
 	} )
 
-	const onSubmit = async (values, props) => {
+	const onSubmit = async (values) => {
 		const response = await axios.post( "http://localhost:8000/api/user/register", values )
 			.catch( (err) => {
 				setError( err.response.data.message );
