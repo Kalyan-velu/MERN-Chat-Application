@@ -1,37 +1,25 @@
 import React from 'react'
 import {Box} from "@mui/system";
 import {IconButton, Toolbar, Tooltip, Typography} from "@mui/material";
-import {Logout, Notifications} from "@mui/icons-material";
-import {useNavigate} from "react-router-dom";
-import ProfileModal from "../pages/pageComponents/profileSettings/profileModal";
+import {Notifications} from "@mui/icons-material";
+import ProfileModal from "../pages/pageComponents/profile/profileModal";
 import {ChatState} from "../context/ChatProvider";
+import AlertDialog from "./Confirmation";
 
 
 export default function Navigation() {
-	const [ anchorEl, setAnchorEl ] = React.useState( false );
-	const {user} = ChatState()
-	const openM = Boolean( anchorEl );
-	const navigate = useNavigate();
 
-	const handleClick = (event) => {
-		setAnchorEl( event.currentTarget );
-	};
-	const handleClose = () => {
-		setAnchorEl( null );
-	};
-	const logOutHandler = () => {
-		localStorage.removeItem( "userInfo" )
-		navigate( '/' )
-	}
+	const {user} = ChatState()
+
 	return (
 		<div style={{
-			width: "23%",
+			width: "100%",
 			marginTop: "2px",
 		}}>
 			<Box sx={{
 				flexGrow: 1,
 				backgroundColor: "#591980",
-				borderRadius: "10px 0 0 0"
+				borderRadius: "10px 10px 0 0"
 			}}
 			     fixed>
 				<Toolbar>
@@ -59,15 +47,10 @@ export default function Navigation() {
 								aria-label="open drawer"
 								sx={{mr: 2}}>
 								<Notifications sx={{color: "#acadad"}}/>
-
-							</IconButton>
-						</Tooltip>
-						<Tooltip title="Log Out">
-							<IconButton onClick={logOutHandler}>
-								<Logout fontSize="small"/>
 							</IconButton>
 						</Tooltip>
 					</div>
+					<AlertDialog/>
 				</Toolbar>
 
 			</Box>

@@ -4,8 +4,9 @@ const {protect} = require( "../middleware/authMiddleware" );
 const router = require( 'express' ).Router()
 
 router.route( '/register' ).post( registerUser )
-router.route( '/' ).get( protect, allUsers )
 router.post( '/login', authUser )
+router.route( '/' ).get( protect, allUsers )
+
 //update user
 router.put( "/:id", async (req, res) => {
 	if (req.body.userId === req.params.id || req.user.isAdmin) {

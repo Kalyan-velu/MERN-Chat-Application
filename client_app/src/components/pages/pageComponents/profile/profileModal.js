@@ -3,7 +3,6 @@ import {useState} from 'react';
 import Modal from '@mui/material/Modal';
 import {Avatar, Button, IconButton, TextField, Tooltip, Typography} from "@mui/material";
 import {Box} from "@mui/system";
-import {AccessAlarm} from "@mui/icons-material";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorFallback from "../../../../errorBoundary/errorBoundary";
 
@@ -24,7 +23,7 @@ const style = {
 	p: 4,
 };
 
-export default function ProfileModal({user, children}) {
+export default function ProfileModal({user}) {
 	const [ open, setOpen ] = React.useState( false );
 	const [ usernameChange, setUsernameChange ] = useState( '' );
 	const handleOpen = () => setOpen( true );
@@ -36,9 +35,7 @@ export default function ProfileModal({user, children}) {
 			<ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {
 			}}>
 				<div>
-					{children ? (<IconButton onClick={handleOpen}><AccessAlarm/></IconButton>
-
-					) : (<Tooltip title="Account settings">
+					<Tooltip title="Account settings">
 						<IconButton
 							onClick={handleOpen}
 							size="large"
@@ -52,7 +49,7 @@ export default function ProfileModal({user, children}) {
 						>
 							<Avatar alt={user.username} src={user.pic}/>
 						</IconButton>
-					</Tooltip>)}
+					</Tooltip>
 
 					<Modal
 						open={open}
@@ -105,7 +102,6 @@ export default function ProfileModal({user, children}) {
 					</Modal>
 				</div>
 			</ErrorBoundary>
-
 		</>
 	);
 }

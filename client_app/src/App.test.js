@@ -1,9 +1,9 @@
 import {render, screen} from '@testing-library/react';
-import Homepage from "./components/pages/Homepage";
+import LandingPage from "./components/pages/LandingPage";
 
 
 test( 'renders authorization page', () => {
-	render( <Homepage/> );
+	render( <LandingPage/> );
 	const authorization = screen.getAllText( /login/i )
 	expect( authorization ).toBeInTheDocument()
 

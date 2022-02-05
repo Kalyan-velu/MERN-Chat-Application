@@ -9,13 +9,13 @@ import Typography from "@mui/material/Typography";
 import ChatLoading from "../loading/ChatLoading";
 import Stack from "@mui/material/Stack";
 import {getSender} from "../../../../config/ChatLog";
-import NewGroup from "./groupChat/NewGroup";
+import NewGroup from "./messages/groupChat/NewGroup";
 
 
 const Alert = React.forwardRef( function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 } );
-export default function MyChats() {
+export default function MyChats({fetchAgain}) {
 	const [ openE, setOpenE ] = React.useState( false );
 	const [ error, setError ] = React.useState( '' );
 	const [ loggedUser, setLoggedUser ] = React.useState();
@@ -41,7 +41,7 @@ export default function MyChats() {
 	useEffect( () => {
 		setLoggedUser( JSON.parse( localStorage.getItem( "userInfo" ) ) )
 		fetchChats()
-	}, [] );
+	}, [ fetchAgain ] );
 
 
 	console.log( selectedChat )
@@ -54,7 +54,7 @@ export default function MyChats() {
 				height={"89vh"}
 				sx={{
 					backgroundColor: "#8B66D8",
-					borderRadius: "0 0 10px 10px"
+					borderRadius: "0 0 0 10px"
 				}}>
 				<Box
 					borderRadius={"30px"}

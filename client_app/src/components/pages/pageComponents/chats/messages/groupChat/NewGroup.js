@@ -4,13 +4,15 @@ import {styled} from '@mui/system'
 import ModalUnstyled from '@mui/base/ModalUnstyled';
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import TextField from "@mui/material/TextField";
-import {ChatState} from "../../../../context/ChatProvider";
+import {ChatState} from "../../../../../context/ChatProvider";
 import Typography from "@mui/material/Typography";
-import {authInstance, chatInstance} from "../../../../../config/axios";
+import {authInstance, chatInstance} from "../../../../../../config/axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
-import UserListItem from "../../userAvater/UserList";
-import UserBadgeItem from "../../userAvater/UserBadgeItem";
+import UserListItem from "../../../lists/UserList";
+import UserBadgeItem from "../../../lists/UserBadgeItem";
+import {Tooltip} from "@mui/material";
+
 
 const StyledModal = styled( ModalUnstyled )`
   position: fixed;
@@ -75,6 +77,7 @@ export default function NewGroup() {
 			console.log( `Search:${response.data}` )
 			setLoading( false )
 			setSearchResults( response.data )
+			console.log( response.data )
 		} catch (e) {
 			console.log( `HandleSearch:${e}` )
 		}
@@ -117,15 +120,18 @@ export default function NewGroup() {
 
 	return (
 		<div>
-
-			<Button
-				onClick={handleOpen}
-				variant={'outlined'}
-				startIcon={<AddOutlinedIcon/>}
-				disableElevation
-			>
-				New Group
-			</Button>
+			<Tooltip
+				title={"Create Group"}>
+				<Button
+					color={"inherit"}
+					onClick={handleOpen}
+					variant={'outlined'}
+					startIcon={<AddOutlinedIcon/>}
+					disableElevation
+				>
+					New Group
+				</Button>
+			</Tooltip>
 			<StyledModal
 				aria-labelledby="unstyled-modal-title"
 				aria-describedby="unstyled-modal-description"
@@ -173,7 +179,7 @@ export default function NewGroup() {
 								handleFunction={() => handleDelete( u )}/>
 						) )}
 					</Box>
-					
+
 					{loading ? <div>Loading...</div> : (
 						searchResults?.slice( 0, 4 ).map( user => (
 							<UserListItem

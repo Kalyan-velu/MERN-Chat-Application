@@ -6,11 +6,10 @@ import TabPanelUnstyled from '@mui/base/TabPanelUnstyled';
 import {buttonUnstyledClasses} from '@mui/base/ButtonUnstyled';
 import TabUnstyled, {tabUnstyledClasses} from '@mui/base/TabUnstyled';
 import {Container, Typography} from "@mui/material";
-import {FavoriteBorderOutlined} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 
-const Register = React.lazy( () => import  ("./authentication/register") );
-const Login = React.lazy( () => import  ("./authentication/login") );
+const Register = React.lazy( () => import  ("./pageComponents/authentication/register") );
+const Login = React.lazy( () => import  ("./pageComponents/authentication/login") );
 
 
 const blue = {
@@ -85,22 +84,27 @@ const TabsList = styled( TabsListUnstyled )`
   align-content: space-between;
 `;
 
-export default function Homepage() {
+export default function LandingPage() {
 	const navigate = useNavigate()
 	useEffect( () => {
 		const user = JSON.parse( localStorage.getItem( "userInfo" ) )
 		if (user) navigate( "/app/chats" )
 	}, [ navigate ] );
 
+	const style = {}
 	return (
 		<>
-			<Container maxWidth="sm" fixed>
+			<Container
+				style={style}
+				maxWidth="sm"
+				fixed>
 				<Box
 					sx={{
 						display: 'flex',
 						justifyContent: 'center',
 						backgroundColor: "#0f112d",
 						width: '100%',
+						height: '80px',
 						m: '15px 0 15px 0',
 						borderRadius: '10px',
 						borderWidth: '1px'
@@ -133,9 +137,7 @@ export default function Homepage() {
 				</div>
 			</Container>
 			<>
-				<div style={{display: "flex", justifyContent: "center",}}>
-					Created By Kalyan With <FavoriteBorderOutlined/>
-				</div>
+
 			</>
 		</>
 	);

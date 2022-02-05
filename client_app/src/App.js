@@ -7,7 +7,7 @@ import ErrorFallback from "./errorBoundary/errorBoundary";
 import {ErrorBoundary} from "react-error-boundary";
 
 const ChatPage = React.lazy( () => import("./components/pages/ChatPage") )
-const Homepage = React.lazy( () => import ("./components/pages/Homepage") )
+const Homepage = React.lazy( () => import ("./components/pages/LandingPage") )
 
 
 function App() {
@@ -28,13 +28,15 @@ function App() {
 			                         height: "100px"
 		                         }}/>}>
 			<div className="App">
-				<ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {
-				}}>
-					<Routes>
-						<Route path="/" exact={true} element={<Homepage/>}/>
-						<Route path="/app/chats" element={<ChatPage/>}/>
-					</Routes>
-				</ErrorBoundary>
+				<div className={'bk'}>
+					<ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {
+					}}>
+						<Routes>
+							<Route path="/" exact={true} element={<Homepage/>}/>
+							<Route path="/app/chats" element={<ChatPage/>}/>
+						</Routes>
+					</ErrorBoundary>
+				</div>
 			</div>
 		</Suspense>
 	);

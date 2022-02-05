@@ -8,7 +8,7 @@ import {SearchTwoTone} from "@mui/icons-material";
 import {ChatState} from "../../../context/ChatProvider";
 import {authInstance, chatInstance} from "../../../../config/axios";
 import ChatLoading from "../loading/ChatLoading";
-import UserListItem from "../userAvater/UserList";
+import UserListItem from "../lists/UserList";
 import {purple} from '@mui/material/colors';
 
 
