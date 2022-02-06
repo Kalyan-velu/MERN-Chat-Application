@@ -21,7 +21,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 	const [ typing, setTyping ] = React.useState( false );
 	const [ isTyping, setIsTyping ] = React.useState( false );
 	const [ socketConnected, setSocketConnected ] = React.useState( false );
-	const {user, selectedChat, setSelectedChat} = ChatState()
+	const {user, notification, setNotification, selectedChat, setSelectedChat} = ChatState()
 
 
 	async function fetchMessages() {
@@ -87,7 +87,12 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 	React.useEffect( () => {
 		socket.on( 'message received', (newMessageReceived) => {
 			if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
-				//Give Notification
+				{
+					if (!notification.includes( newMessageReceived )) {
+						setNotification( [ newMessageReceived, ...notification ] )
+						setFetchAgain( !fetchAgain )
+					}
+				}
 			} else {
 				setMessages( [ ...messages, newMessageReceived ] )
 			}

@@ -9,10 +9,12 @@ const userRoutes = require( './src/routes/userRouter' )
 const chatRoutes = require( './src/routes/chatRouter' )
 const messageRoutes = require( './src/routes/messageRoutes' )
 const {notFound, errorHandler} = require( "./src/middleware/errorMiddleware" );
-const app = express()
+const path = require( "path" );
 
+
+const app = express()
 dotenv.config()
-//connecting MongoDb
+//connecting MongoDb Database
 mongoose.connect(
 	process.env.DATABASE_ACCESS, {useNewUrlParser: true, useUnifiedTopology: true},
 	() => {
@@ -25,6 +27,7 @@ app.use( express.json() )
 app.use( express.urlencoded( {extended: true} ) )
 app.use( helmet() )
 app.use( morgan( "common" ) )
+//Enabling Cors
 app.use( cors() )
 app.options( '*', cors() );
 const allowCrossDomain = function (req, res, next) {
@@ -37,12 +40,23 @@ app.use( allowCrossDomain );
 
 //routes
 
-app.get( "/", (req, res) => {
-	res.json( {message: "Welcome to  application."} );
-} );
 app.use( "/api/user", userRoutes )
 app.use( "/api/chat", chatRoutes )
 app.use( "/api/message", messageRoutes )
+
+//Deployment
+const __dirname1 = path.resolve()
+if (process.env.NODE_ENV === 'production') {
+	app.use( express.static( path.join( __dirname1, '../client_app/build' ) ) )
+
+	app.get( '*', (request, response) => {
+		response.sendFile( path.resolve( __dirname1, "../client_app", "build", "index.html" ) )
+	} )
+} else {
+	app.get( "/", (request, response) => {
+		response.json( {message: "Server is Up"} );
+	} );
+}
 
 //error handlers
 app.use( notFound )
@@ -51,19 +65,22 @@ app.use( errorHandler )
 const PORT = process.env.PORT || 4000
 const server = app.listen( PORT, () => console.log( `Server is running at port ${PORT}` ) )
 
-
+//Socket.io implementation
 const io = require( 'socket.io' )( server, {
 	pingTimeout: 60000,
 	cors: {
 		origin: "*"
 	}
 } );
+
 io.on( "connection", (socket) => {
 	console.log( "Connected to Socket.io" )
+
 	socket.on( "setup", (userData) => {
 		socket.join( userData._id );
 		socket.emit( 'connected' )
 	} );
+
 	socket.on( 'join chat', (room) => {
 		socket.join( room );
 		console.log( "user joined room:" + room )
@@ -74,8 +91,9 @@ io.on( "connection", (socket) => {
 
 	socket.on( 'new message', (newMessageReceived) => {
 		let chat = newMessageReceived.chat;
+		if (!chat.users) return
+		console.log( "chat.users not defined" )
 
-		if (!chat.users) return console.log( "chat.users not defined" )
 		//not to send same message back to the sender
 		chat.users.forEach( user => {
 			if (user._id === newMessageReceived.sender._id) return;
