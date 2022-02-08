@@ -3,17 +3,17 @@ import {ChatState} from "../../../../../context/ChatProvider";
 import Box from "@mui/system/Box";
 import Typography from "@mui/material/Typography";
 import {ArrowBackIos} from "@mui/icons-material";
-import {IconButton, TextField} from "@mui/material";
+import {Grid, IconButton, TextField} from "@mui/material";
 import {getSender, getSenderFull} from "../../../../../../config/ChatLog";
 import UserProfileModal from "../../../profile/UserProfileModal";
 import GroupModal from "../../../profile/GroupModal";
 import {messageInstance} from "../../../../../../config/axios";
 import ChatScroll from "../../ChatScroll";
 import {io} from "socket.io-client";
+import GiF from "../../../../../../animations/Welcome";
 
 const ENDPOINT = "http://localhost:8000"
 let socket, selectedChatCompare;
-
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
 	const [ messages, setMessages ] = React.useState( [] );
 	const [ newMessage, setNewMessage ] = React.useState( "" );
@@ -87,11 +87,9 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 	React.useEffect( () => {
 		socket.on( 'message received', (newMessageReceived) => {
 			if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
-				{
-					if (!notification.includes( newMessageReceived )) {
-						setNotification( [ newMessageReceived, ...notification ] )
-						setFetchAgain( !fetchAgain )
-					}
+				if (!notification.includes( newMessageReceived )) {
+					setNotification( [ newMessageReceived, ...notification ] )
+					setFetchAgain( !fetchAgain )
 				}
 			} else {
 				setMessages( [ ...messages, newMessageReceived ] )
@@ -123,10 +121,15 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
 	return (
 		<>{selectedChat ?
-			(<>
+			(<Grid container>
+					<div style={{
+						backgroundColor: "#111"
+					}}/>
 					<Box
 						width={"100%"}
+						height={"63px"}
 						display={"flex"}
+						bgcolor={"#591980"}
 						justifyContent={"space-around"}
 						alignItems={"center"}
 					>
@@ -157,7 +160,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 								<div style={{flexGrow: "1"}}/>
 							</>
 						)}
-
 						<div style={{flexGrow: "1"}}/>
 						{!selectedChat.isGroupChat ? (
 							<>
@@ -172,46 +174,65 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 							</>
 						)}
 					</Box>
-					<Box
-						display={"flex"}
-						flexDirection={"column"}
-						justifyContent={"flex-end"}
-						p={3}
-						bgcolor={"#110202"}
-						style={{overflowY: "hidden"}}>
-						{loading ? (
-							<div>
-								<iframe src="https://embed.lottiefiles.com/animation/53761"/>
-							</div>
-						) : (
-							<div className={"messages"}>
-								<ChatScroll messages={messages}/>
-							</div>
-						)}
-						{isTyping ? <div>Loading...</div> : null}
-						<TextField
-							variant={"outlined"}
-							margin={'dense'}
-							size={"small"}
-							onKeyDown={sendMessage}
-							onChange={typingHandler}
-							value={newMessage}
-						/>
-					</Box>
-				</>
+					<div style={{
+						height: "85vh",
+						width: "71vw"
+					}}>
+						<Box
+							display={"flex"}
+							flexDirection={"column"}
+							justifyContent={"flex-end"}
+							width={"100%"}
+							height={"100%"}
+							p={3}
+							bgcolor={"#E8E8E8"}
+							style={{overflowY: "hidden"}}>
+							{loading ? (
+								<div>
+									loading
+								</div>
+							) : (
+								<div style={{
+									display: "flex",
+									flexDirection: "column",
+									overflowY: 'scroll',
+									scrollbarWidth: 'none'
+								}}>
+									<ChatScroll
+										messages={messages}
+									/>
+									{isTyping ? <div>Loading...</div> : null}
+									<TextField
+										variant={"outlined"}
+										margin={'dense'}
+										fullWidth
+										placeholder={"Type a message"}
+										size={"small"}
+										onKeyDown={sendMessage}
+										onChange={typingHandler}
+										value={newMessage}
+									/>
+
+								</div>
+							)}
+						</Box>
+
+					</div>
+				</Grid>
 			) : (
 				<Box
-					display={"flex"}
 					alignItems={"center"}
-					justifyContent={"center"}
-					h={"100%"}
+					display="grid"
+					paddingTop={"20%"}
+					justifyItems={"center"}
 				>
+					<GiF/>
 					<Typography
-						variant={"h3"}
-						paddingTop={"25%"}
+						variant={"h4"}
+						color={"#0f112d"}
 						pb={3}
 					>
-						Click on a chat to start chatting
+						Click on a conversation to start chatting
 					</Typography>
 				</Box>
 			)

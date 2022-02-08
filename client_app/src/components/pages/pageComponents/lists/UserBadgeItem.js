@@ -17,8 +17,6 @@ const UserBadgeItem = ({user, handleFunction}) => {
 				varient={"outlined"}
 			/>
 		</Stack>
-
-
 	)
 }
 

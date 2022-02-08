@@ -2,7 +2,6 @@ import React, {Suspense} from "react";
 import {Route, Routes} from "react-router-dom";
 import lottie from 'lottie-web'
 import loading from '../src/animations/progress-bar.json'
-import "./App.css";
 import ErrorFallback from "./errorBoundary/errorBoundary";
 import {ErrorBoundary} from "react-error-boundary";
 
@@ -28,15 +27,13 @@ function App() {
 			                         height: "100px"
 		                         }}/>}>
 			<div className="App">
-				<div className={'bk'}>
-					<ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {
-					}}>
-						<Routes>
-							<Route path="/" exact={true} element={<Homepage/>}/>
-							<Route path="/app/chats" element={<ChatPage/>}/>
-						</Routes>
-					</ErrorBoundary>
-				</div>
+				<ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {
+				}}>
+					<Routes>
+						<Route path="/" exact={true} element={<Homepage/>}/>
+						<Route path="/app/chats" element={<ChatPage/>}/>
+					</Routes>
+				</ErrorBoundary>
 			</div>
 		</Suspense>
 	);

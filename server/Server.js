@@ -1,9 +1,6 @@
 const express = require( 'express' )
 const mongoose = require( 'mongoose' )
 const dotenv = require( 'dotenv' )
-const helmet = require( 'helmet' )
-const bodyParser = require( "body-parser" );
-const morgan = require( 'morgan' )
 const cors = require( 'cors' )
 const userRoutes = require( './src/routes/userRouter' )
 const chatRoutes = require( './src/routes/chatRouter' )
@@ -20,13 +17,10 @@ mongoose.connect(
 	() => {
 		console.log( "Database Connected" )
 	} )
-//middleware
-app.use( bodyParser.json() )
+
 //to accept JSON data
 app.use( express.json() )
 app.use( express.urlencoded( {extended: true} ) )
-app.use( helmet() )
-app.use( morgan( "common" ) )
 //Enabling Cors
 app.use( cors() )
 app.options( '*', cors() );
