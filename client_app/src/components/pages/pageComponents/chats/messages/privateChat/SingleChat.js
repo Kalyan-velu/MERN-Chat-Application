@@ -79,8 +79,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
 	React.useEffect( () => {
 		// eslint-disable-next-line
-		fetchMessages();
-
+		fetchMessages()
 		selectedChatCompare = selectedChat;
 	}, [ selectedChat ] );
 
