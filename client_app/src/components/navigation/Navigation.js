@@ -59,12 +59,11 @@ export default function Navigation() {
 	return (
 		<div style={{
 			width: "100%",
-			marginTop: "2px",
 		}}>
 			<Box sx={{
 				flexGrow: 1,
 				backgroundColor: "#591980",
-				borderRadius: "10px 10px 0 0"
+				borderRadius: "10px 0 0 0"
 			}}
 			     fixed>
 				<Toolbar>

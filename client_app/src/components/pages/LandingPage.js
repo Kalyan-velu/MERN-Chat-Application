@@ -91,11 +91,9 @@ export default function LandingPage() {
 		if (user) navigate( "/app/chats" )
 	}, [ navigate ] );
 
-	const style = {}
 	return (
 		<>
 			<Container
-				style={style}
 				maxWidth="sm"
 				fixed>
 				<Box

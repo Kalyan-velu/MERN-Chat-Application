@@ -46,16 +46,29 @@ export default function MyChats({fetchAgain}) {
 
 	console.log( selectedChat )
 	return (
-		<>
+		<div
+			style={{
+				height: "91vh",
+			}}>
 			<Box
 				display={{base: selectedChat ? null : "flex", md: "flex"}}
 				flexDirection={"column"}
-				width={{base: '100%', 'md': '23%'}}
-				height={"89vh"}
+				width="100%"
+				height={"100%"}
 				sx={{
 					backgroundColor: "#8B66D8",
-					borderRadius: "0 0 0 10px"
+					borderRadius: "0 0 0 10px",
 				}}>
+				<Box
+					fontSize={{base: "16px", 'md': '20px'}}
+					display={"flex"}
+					width={'100%'}
+					marginTop={"10px"}
+					justifyContent="space-around"
+					alignItem={"center"}>
+					<Typography variant={'h5'}>Messages</Typography>
+					<NewGroup/>
+				</Box>
 				<Box
 					borderRadius={"30px"}
 					margin={"20px"}
@@ -67,19 +80,10 @@ export default function MyChats({fetchAgain}) {
 					/>
 				</Box>
 				<Box
-					fontSize={{base: "16px", 'md': '20px'}}
-					display={"flex"}
-					width={'100%'}
-					justifyContent="space-around"
-					alignItem={"center"}>
-					<Typography variant={'h5'}>Chats</Typography>
-					<NewGroup/>
-				</Box>
-				<Box
 					d={"flex"}
 					flexDirection={"column"}
+					height={'100%'}
 					p={3}
-					height={"100%"}
 					bgcolor={"#8B66D8"}
 					borderRadius={"10px"}
 					overflowy={"hidden"}>
@@ -118,6 +122,6 @@ export default function MyChats({fetchAgain}) {
 					</Alert>
 				</Snackbar>
 				: null}
-		</>
+		</div>
 	)
 }

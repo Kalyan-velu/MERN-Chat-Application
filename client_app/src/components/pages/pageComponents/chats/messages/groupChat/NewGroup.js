@@ -41,7 +41,6 @@ const Backdrop = styled( 'div' )`
 const style = {
 	width: 400,
 	bgcolor: '#fff',
-	borderRadius: '10px',
 	p: 2,
 	px: 4,
 	pb: 3,
@@ -197,7 +196,12 @@ export default function NewGroup() {
 						justifyItems={"flex-end"}
 					>
 						<div style={{flexGrow: "1"}}/>
-						<LoadingButton loading={loading} onClick={handleSubmit}>Create Group</LoadingButton>
+						<LoadingButton
+							loading={loading}
+							onClick={handleSubmit}
+						>
+							Create
+						</LoadingButton>
 					</Box>
 				</Box>
 			</StyledModal>
