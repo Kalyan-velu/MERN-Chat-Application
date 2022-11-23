@@ -1,0 +1,28 @@
+/server/.idea/
+/server/node_modules/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+
+
+client_app/node_modules
+client_app/.pnp
+client_app/.pnp.js
+
+# testing
+client_app/coverage
+
+# production
+client_app/build
+
+# misc
+client_app.DS_Store
+client_app.env.local
+client_app.env.development.local
+client_app.env.test.local
+client_app.env.production.local
+
+client_appnpm-debug.log*
+client_appyarn-debug.log*
+client_appyarn-error.log*
+client_app/.idea/
+server/.idea/
