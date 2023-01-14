@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "Server.js",
   "scripts": {
-    "start": "yarn install && nodemon",
+    "start": "nodemon",
     "pre-build": "cd ../client_app && yarn install && yarn build"
   },
   "keywords": [],
