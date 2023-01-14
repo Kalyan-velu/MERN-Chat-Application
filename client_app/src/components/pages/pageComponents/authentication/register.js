@@ -69,7 +69,7 @@ const Register = () => {
 	} )
 
 	const onSubmit = async (values) => {
-		const response = await axios.post( "http://localhost:8000/api/user/register", values )
+		const response = await axios.post( "/api/user/register", values )
 			.catch( (err) => {
 				setError( err.response.data.message );
 				setOpen( true )
