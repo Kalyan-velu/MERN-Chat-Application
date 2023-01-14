@@ -10,15 +10,12 @@ const registerUser = async (require, response) => {
 			message: 'Please fill all the fields'
 		} );
 	}
-
 	const userExists = await User.findOne( {phoneNumber} );
-
 	if (userExists) {
 		response.status( 400 ).json( {
 			message: 'User already exists'
 		} );
 	}
-
 	const user = await User.create( {
 		username,
 		phoneNumber,

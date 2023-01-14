@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema( {
 			required: false,
 			default: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
 		},
+		verified:{
+			type:Boolean,
+			default:false,
+		},
 		isAdmin: {
 			type: Boolean,
 		},
@@ -52,4 +56,3 @@ userSchema.pre( 'save', async function (next) {
 
 
 module.exports = mongoose.model( "User", userSchema )
-
