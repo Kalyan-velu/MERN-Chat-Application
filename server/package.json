@@ -4,7 +4,7 @@
   "main": "Server.js",
   "scripts": {
     "start": "nodemon",
-    "pre-build": "cd ../client_app && yarn build"
+    "pre-build": "cd ../client_app && yarn install && yarn build"
   },
   "keywords": [],
   "author": "",
