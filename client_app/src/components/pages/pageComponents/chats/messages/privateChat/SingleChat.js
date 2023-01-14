@@ -12,7 +12,7 @@ import ChatScroll from "../../ChatScroll";
 import {io} from "socket.io-client";
 import GiF from "../../../../../../animations/Welcome";
 
-const ENDPOINT = "http://localhost:8000"
+const ENDPOINT = "https://chat-application-server.onrender.com"
 let socket, selectedChatCompare;
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
 	const [ messages, setMessages ] = React.useState( [] );
